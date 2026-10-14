@@ -4,7 +4,7 @@ Vasyl Dobrovolskyi's [BB](https://getbb.app) plugins, in one repository. Every p
 
 | Plugin | Directory | What it does |
 | --- | --- | --- |
-| Graphite | [`plugins/graphite`](plugins/graphite) | A neutral graphite palette for light and dark mode. |
+| Graphite | [`plugins/graphite`](plugins/graphite) | A neutral graphite palette for light and dark mode with blurred sticky headers. |
 | Thread View | [`plugins/thread-view`](plugins/thread-view) | A wider thread with calmer reply typography and a compact prompt box with quiet Send controls. |
 | Project Workspace | [`plugins/project-workspace`](plugins/project-workspace) | Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat. |
 | Session Card Layout | [`plugins/session-card-layout`](plugins/session-card-layout) | Current, two-line or one-line session cards in Project Workspace. Requires Project Workspace. |
@@ -58,7 +58,7 @@ Each plugin directory is self-contained: run `npm ci` inside it, then `npm run t
 
 ## When BB updates
 
-Graphite only sets theme tokens, which BB supports through `bb.themes`. Thread View styles BB's own DOM, and Project Workspace also hides and drives parts of BB's shell. BB has no stable contract for that markup, so a release can rename an attribute or class and quietly undo a style.
+Graphite sets theme tokens, which BB supports through `bb.themes`, plus a header blur on one BB class. Thread View styles BB's own DOM, and Project Workspace also hides and drives parts of BB's shell. BB has no stable contract for that markup, so a release can rename an attribute or class and quietly undo a style.
 
 [`scripts/check-selectors.mjs`](scripts/check-selectors.mjs) lists every BB attribute, test id, and class name the plugins depend on and looks each one up in the published `bb-app` bundle:
 

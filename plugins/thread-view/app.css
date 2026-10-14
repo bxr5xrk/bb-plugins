@@ -62,23 +62,55 @@
 
 [data-markdown-preview] code:not(pre code) {
   font-size: 0.86em;
+  color: var(--prose-code);
+  background-color: var(--prose-code-background);
+  box-shadow: inset 0 0 0 1px var(--prose-code-edge);
+}
+
+[data-markdown-preview] a[href] {
+  color: var(--prose-link);
+  text-decoration-color: color-mix(in srgb, var(--prose-link) 45%, transparent);
+}
+
+[data-markdown-preview] a[href]:hover {
+  text-decoration-color: var(--prose-link);
 }
 
 :root,
 .light {
+  --prose-link: #2f6fbd;
+  --prose-code: #c2413e;
+  --prose-code-background: rgb(0 0 0 / 4%);
+  --prose-code-edge: rgb(0 0 0 / 9%);
+}
+
+.dark {
+  --prose-link: #6ea7ec;
+  --prose-code: #ec7f7e;
+  --prose-code-background: rgb(255 255 255 / 5%);
+  --prose-code-edge: rgb(255 255 255 / 11%);
+}
+
+:root,
+.light {
+  --promptbox-background: rgb(255 255 255 / 82%);
   --promptbox-edge: rgb(37 39 36 / 12%);
   --promptbox-shadow: 0 8px 24px rgb(30 35 30 / 7%);
 }
 
 .dark {
+  --promptbox-background: rgb(58 61 62 / 82%);
   --promptbox-edge: rgb(244 243 239 / 11%);
   --promptbox-shadow: 0 10px 30px rgb(0 0 0 / 13%);
 }
 
 [data-promptbox] {
+  background-color: var(--promptbox-background);
   border-color: var(--promptbox-edge);
   border-radius: 18px;
   box-shadow: var(--promptbox-shadow), inset 0 1px 0 rgb(255 255 255 / 3%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  backdrop-filter: blur(16px) saturate(115%);
 }
 
 /* Send and its menu use the same quiet icon treatment as the other controls. */

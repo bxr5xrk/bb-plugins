@@ -7,6 +7,7 @@ const q = "[`\"']";
 const attr = (name, value) => new RegExp(`"${name}":${q}${value}${q}`);
 
 const selectors = {
+  graphite: ["bg-surface-scrim"],
   "thread-view": [
     /"data-promptbox":/,
     "data-promptbox-submit-action",

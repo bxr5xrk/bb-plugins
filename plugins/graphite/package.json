@@ -1,6 +1,6 @@
 {
   "name": "bb-plugin-graphite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "engines": {
@@ -9,7 +9,7 @@
   },
   "bb": {
     "name": "Graphite",
-    "description": "A neutral graphite palette for light and dark mode.",
+    "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
     "branding": {
       "icon": "Palette"
     },
@@ -18,7 +18,7 @@
       {
         "id": "graphite",
         "name": "Graphite",
-        "description": "Neutral graphite chrome for light and dark mode.",
+        "description": "Neutral graphite chrome with blurred sticky headers.",
         "css": "./themes/graphite.css"
       }
     ],

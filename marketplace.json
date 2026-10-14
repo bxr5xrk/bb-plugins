@@ -8,7 +8,7 @@
     {
       "id": "graphite",
       "displayName": "Graphite",
-      "description": "A neutral graphite palette for light and dark mode.",
+      "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
       "icon": "Palette",
       "tags": [
         "theme",
