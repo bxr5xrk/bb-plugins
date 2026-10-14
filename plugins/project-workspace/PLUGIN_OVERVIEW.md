@@ -4,7 +4,7 @@ Labelled navigation / reusable Bots profiles / project rail → agent or
 project Sessions / Profile / Memory / project Explorer → native BB chat and preview.
 
 Public frontend registrations: exclusive thread list `project-workspace/workspace`,
-host navigation activation bridge, mode settings,
+host navigation activation bridge, mode and Session cards settings,
 invisible thread-header file-preview opener and scoped sizing content script.
 
 Backend owns private SQLite profiles, immutable chat bindings, project-scoped

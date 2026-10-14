@@ -22,7 +22,7 @@ disposable shell CSS. Search, routes and keyboard shortcuts stay host-owned.
 
 ## Sessions
 
-The optional **Session Card Layout** companion plugin adds Settings → Session Card Layout → Вигляд картки сесії: Поточний (80 px spacing), Два рядки (64 px) and Один рядок (40 px). Its disposable root attribute is observed by WindowedSessions so section heights and scroll offsets match card density. The original layout remains the default and returns on disable. Compact CSS is owned by the companion; existing row actions and data stay here. One-line mode hides the preview and visible status text; the existing status tooltip and accessibility text remain.
+Settings → Plugins → Project Workspace → **Session cards** picks how much each card in the Sessions list shows. Each choice is a button with a live sample card rendered by the same CSS as the list: **Detailed** (default; title, last message and status on separate lines, 80 px rows), **Compact** (status beside the title, time beside the last message, 64 px rows) and **Title only** (title and time with a status dot, 40 px rows). The value is the `sessionCards` plugin setting (`detailed`, `compact`, `title-only`), so `bb plugin config project-workspace set sessionCards compact` works too. WindowedSessions reads the setting for row height, section height and scroll offsets. Title only hides the preview and visible status text; the status tooltip and accessibility text remain.
 
 The project rail includes Personal workspace and real projects with no sessions.
 Sessions have project-local search, pins, recency, drafts,

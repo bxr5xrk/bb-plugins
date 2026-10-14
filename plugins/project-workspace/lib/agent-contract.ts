@@ -1,5 +1,6 @@
 import { defineRpcContract } from "@get-bb/plugin-sdk";
 import { z } from "zod";
+import { SESSION_CARDS } from "./session-cards";
 
 export const agentColors = ["#80cbc4", "#b5a0e3", "#e8b77b", "#a4bfdf", "#b0cc89", "#d59bbd"] as const;
 export const agentAvatars = ["ghost", "crab", "owl", "robot", "cat", "spark"] as const;
@@ -44,6 +45,7 @@ export const rpcContract = defineRpcContract({
   spawnAgentThread: { input: z.object({ agentId: entityId, requestId: entityId, request: nativeRequestSchema, coordinationWork: z.string().trim().min(1).max(300).nullable().optional() }).strict(), output: z.object({ threadId: entityId }).strict() },
   bindAgentThread: { input: z.object({ agentId: entityId, threadId: entityId }).strict(), output: agentBindingSchema },
   setAgentCoordination: { input: z.object({ threadId: entityId, allowed: z.boolean(), work: z.string().trim().min(1).max(300).nullable() }).strict(), output: agentBindingSchema },
+  setSessionCards: { input: z.object({ sessionCards: z.enum(SESSION_CARDS) }).strict(), output: z.object({ sessionCards: z.enum(SESSION_CARDS) }).strict() },
 });
 export type AgentProfile = z.infer<typeof agentProfileSchema>;
 export type AgentFields = z.infer<typeof agentFieldsSchema>;

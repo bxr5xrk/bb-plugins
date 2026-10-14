@@ -4,11 +4,13 @@ import { posix, win32 } from "node:path";
 import { entityId, legacyAgentSchema, rpcContract } from "./lib/agent-contract";
 import { createAgentStore, digest, type Operation } from "./lib/agent-store";
 import { registerBotMentions } from "./lib/bot-mentions";
+import { sessionCards, sessionCardsSetting } from "./lib/session-cards";
 export { rpcContract } from "./lib/agent-contract";
 
 const tools = ["workspace_agent_read", "workspace_agent_learn", "workspace_agent_peers", "workspace_agent_delegate", "workspace_agent_message"];
 const runtimeEvents = ["thread/identity", "thread/compacted", "thread/context/cleared"] as const;
 export default function plugin(bb: BbPluginApi) {
+  const settings = bb.settings.define({ sessionCards: sessionCardsSetting });
   const store = createAgentStore(bb);
   registerBotMentions(bb, store);
   const inflight = new Map<string, Promise<unknown>>();
@@ -109,6 +111,7 @@ export default function plugin(bb: BbPluginApi) {
   }
 
   bb.rpc.register(rpcContract, {
+    async setSessionCards(value) { return { sessionCards: sessionCards((await settings.experimental_set(value)).sessionCards) }; },
     async listAgents() { return { agents: await legacy() }; },
     async saveAgent(value) {
       await bb.sdk.threads.get({ threadId: value.threadId });

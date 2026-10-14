@@ -16,10 +16,6 @@
       "source": "./plugins/project-workspace"
     },
     {
-      "name": "session-card-layout",
-      "source": "./plugins/session-card-layout"
-    },
-    {
       "name": "fast-mode-memory",
       "source": "./plugins/fast-mode-memory"
     }

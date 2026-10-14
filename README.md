@@ -7,7 +7,6 @@ Vasyl Dobrovolskyi's [BB](https://getbb.app) plugins, in one repository. Every p
 | Graphite | [`plugins/graphite`](plugins/graphite) | A neutral graphite palette for light and dark mode with blurred sticky headers. |
 | Thread View | [`plugins/thread-view`](plugins/thread-view) | A wider thread with calmer reply typography and a compact prompt box with quiet Send controls. |
 | Project Workspace | [`plugins/project-workspace`](plugins/project-workspace) | Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat. |
-| Session Card Layout | [`plugins/session-card-layout`](plugins/session-card-layout) | Current, two-line or one-line session cards in Project Workspace. Requires Project Workspace. |
 | Fast Mode Memory | [`plugins/fast-mode-memory`](plugins/fast-mode-memory) | Remembers each thread and model's Fast mode choice across navigation and reloads. |
 
 ## Install
@@ -40,7 +39,7 @@ bb theme set plugin:graphite:graphite
 ## Restore everything on a new machine
 
 ```sh
-for id in graphite thread-view project-workspace session-card-layout fast-mode-memory; do
+for id in graphite thread-view project-workspace fast-mode-memory; do
   bb plugin install git:https://github.com/bxr5xrk/bb-plugins.git@main --plugin "$id" --yes
 done
 bb theme set plugin:graphite:graphite

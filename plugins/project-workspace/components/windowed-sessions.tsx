@@ -1,7 +1,9 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useSettings } from "@get-bb/plugin-sdk/app";
 import { Icon } from "./ui/icon";
 import { SessionRow } from "./session-row";
-import { SESSION_ROW_HEIGHT, type SessionItem } from "../lib/workspace-model";
+import type { SessionItem } from "../lib/workspace-model";
+import { SESSION_CARD_OPTIONS, sessionCards } from "../lib/session-cards";
 
 type Section = { header: Extract<SessionItem, { kind: "section" }>; rows: Extract<SessionItem, { kind: "thread" }>[] };
 
@@ -11,18 +13,7 @@ export function WindowedSessions({ items, activeThreadId, onNavigate, toggleSect
 }) {
   const scroller = useRef<HTMLDivElement>(null), prefix = useId();
   const [viewport, setViewport] = useState({ top: 0, height: 600 });
-  const readRowHeight = () => {
-    const layout = document.documentElement.getAttribute("data-bb-session-card-layout");
-    return layout === "two-lines" ? 64 : layout === "one-line" ? 40 : SESSION_ROW_HEIGHT;
-  };
-  const [rowHeight, setRowHeight] = useState(readRowHeight);
-  useLayoutEffect(() => {
-    const update = () => setRowHeight(readRowHeight());
-    const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-bb-session-card-layout"] });
-    update();
-    return () => observer.disconnect();
-  }, []);
+  const cards = sessionCards(useSettings().values?.sessionCards), rowHeight = SESSION_CARD_OPTIONS[cards].rowHeight;
   const [instantSection, setInstantSection] = useState<string | null>(null);
   const [retainedRows, setRetainedRows] = useState<ReadonlyMap<string, ReadonlySet<string>>>(new Map());
   const renderedRows = useRef<ReadonlyMap<string, ReadonlySet<string>>>(new Map());
@@ -46,7 +37,7 @@ export function WindowedSessions({ items, activeThreadId, onNavigate, toggleSect
     return groups;
   }, [items]);
   let sectionTop = 0;
-  return <div className="pw-sessions-scroll" ref={scroller} onScroll={event => setViewport({ top: event.currentTarget.scrollTop, height: event.currentTarget.clientHeight || 600 })}>
+  return <div className="pw-sessions-scroll" data-pw-session-cards={cards} ref={scroller} onScroll={event => setViewport({ top: event.currentTarget.scrollTop, height: event.currentTarget.clientHeight || 600 })}>
     <div className="pw-window">
       {sections.map(({ header, rows }) => {
         const closed = collapsed.has(header.id), contentHeight = rows.length * rowHeight;

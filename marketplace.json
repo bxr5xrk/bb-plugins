@@ -74,28 +74,6 @@
       }
     },
     {
-      "id": "session-card-layout",
-      "displayName": "Session Card Layout",
-      "description": "Choose current, two-line or one-line session cards in Project Workspace.",
-      "icon": "Rows3",
-      "tags": [
-        "sidebar",
-        "appearance"
-      ],
-      "author": {
-        "name": "Vasyl Dobrovolskyi",
-        "github": "bxr5xrk"
-      },
-      "source": {
-        "git": {
-          "url": "https://github.com/bxr5xrk/bb-plugins.git",
-          "subdir": "plugins/session-card-layout",
-          "range": ">=0.1.0",
-          "tagPrefix": "session-card-layout/"
-        }
-      }
-    },
-    {
       "id": "fast-mode-memory",
       "displayName": "Fast Mode Memory",
       "description": "Remember each thread and model’s Fast mode choice across navigation and app reloads.",

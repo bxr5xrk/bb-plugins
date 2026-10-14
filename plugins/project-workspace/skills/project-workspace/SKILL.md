@@ -10,6 +10,9 @@ providers, permissions, composer and previews; this plugin owns sidebar/profile 
 
 - Settings → Plugins → Project Workspace → Workspace activates the project rail
   and adjacent Sessions/Explorer. Default BB restores the bundled thread list and native navigation.
+- Setting `sessionCards` (Settings → Plugins → Project Workspace → Session cards):
+  `detailed` (default, 80 px rows), `compact` (64 px) or `title-only` (40 px).
+  CLI: `bb plugin config project-workspace set sessionCards compact`.
 - Project selection filters sessions without replacing the current chat. Explorer
   reads the project's explicit-machine source, including projects without chats.
   Personal uses a real ready environment. File preview is read-only.

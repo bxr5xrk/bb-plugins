@@ -96,29 +96,32 @@ describe("Session attention refinement", () => {
     finishHeightTransition(document.getElementById(section.getAttribute("aria-controls")!)!);
     expect(slot.getAllByRole("link").length).toBeLessThan(30);
   });
-  it("updates window offsets and section heights for compact layouts and restores the original spacing", async () => {
-    const slot = setup(Array.from({ length: 2000 }, (_, index) => thread(`chat-${index}`, "alpha", { latestAttentionAt: 2000 - index })));
-    const root = document.documentElement;
-    const scroller = slot.container.querySelector<HTMLDivElement>(".pw-sessions-scroll")!;
-    const section = slot.getByRole("button", { name: "Sessions 2000" });
-    if (section.getAttribute("aria-expanded") === "false") fireEvent.click(section);
-    const content = document.getElementById(section.getAttribute("aria-controls")!)!;
-    try {
-      for (const [mode, height] of [["two-lines", 64], ["one-line", 40]] as const) {
-        await act(async () => { root.setAttribute("data-bb-session-card-layout", mode); });
-        expect(content.style.height).toBe(`${2000 * height}px`);
-        expect(slot.container.querySelector<HTMLElement>(".pw-window-row")!.style.height).toBe(`${height}px`);
-        scroller.scrollTop = 1000 * height; fireEvent.scroll(scroller);
-        expect(slot.getByRole("link", { name: /chat-1000 / })).toBeTruthy();
-        expect(slot.queryByRole("link", { name: /chat-0 / })).toBeNull();
-        expect(slot.getAllByRole("link").length).toBeLessThan(60);
-      }
-      await act(async () => { root.removeAttribute("data-bb-session-card-layout"); });
-      expect(content.style.height).toBe("160000px");
-      expect(slot.container.querySelector<HTMLElement>(".pw-window-row")!.style.height).toBe("80px");
-    } finally {
-      root.removeAttribute("data-bb-session-card-layout");
+  it("sizes window offsets and section heights from the Session cards setting", () => {
+    for (const [cards, height] of [["detailed", 80], ["compact", 64], ["title-only", 40], [undefined, 80]] as const) {
+      const slot = setup(Array.from({ length: 2000 }, (_, index) => thread(`chat-${index}`, "alpha", { latestAttentionAt: 2000 - index })), cards ? { settings: { sessionCards: cards } } : {});
+      const scroller = slot.container.querySelector<HTMLDivElement>(".pw-sessions-scroll")!;
+      expect(scroller.dataset.pwSessionCards).toBe(cards ?? "detailed");
+      const section = slot.getByRole("button", { name: "Sessions 2000" });
+      if (section.getAttribute("aria-expanded") === "false") fireEvent.click(section);
+      const content = document.getElementById(section.getAttribute("aria-controls")!)!;
+      expect(content.style.height).toBe(`${2000 * height}px`);
+      expect(slot.container.querySelector<HTMLElement>(".pw-window-row")!.style.height).toBe(`${height}px`);
+      scroller.scrollTop = 1000 * height; fireEvent.scroll(scroller);
+      expect(slot.getByRole("link", { name: /chat-1000 / })).toBeTruthy();
+      expect(slot.queryByRole("link", { name: /chat-0 / })).toBeNull();
+      expect(slot.getAllByRole("link").length).toBeLessThan(60);
+      cleanup();
     }
+  });
+  it("Session cards settings show a live sample per option and save the chosen one", async () => {
+    const setSessionCards = vi.fn(async (value: unknown) => value);
+    const slot = renderSlot(app.settingsSections.find(section => section.id === "session-cards")!, {}, { rpc: { setSessionCards }, settings: { sessionCards: "compact" } });
+    const options = slot.getAllByRole("button");
+    expect(options.map(option => option.querySelector(".pw-card-option-label")!.textContent)).toEqual(["Detailed", "Compact", "Title only"]);
+    expect(options.map(option => option.getAttribute("aria-pressed"))).toEqual(["false", "true", "false"]);
+    expect(options.map(option => option.querySelector<HTMLElement>(".pw-card-sample")!.dataset.pwSessionCards)).toEqual(["detailed", "compact", "title-only"]);
+    await userEvent.click(options[2]!);
+    expect(setSessionCards).toHaveBeenCalledWith({ sessionCards: "title-only" });
   });
   it("keeps the following section populated while a tall Pinned section expands above it", () => {
     const slot = setup([
