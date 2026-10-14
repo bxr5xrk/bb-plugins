@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [graphite, thread-view, project-workspace, fast-mode-memory]
+        plugin: [graphite, thread-view, project-workspace, fast-mode-memory, provider-hooks]
     defaults:
       run:
         working-directory: plugins/${{ matrix.plugin }}

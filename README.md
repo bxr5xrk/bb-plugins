@@ -34,6 +34,12 @@ Remembers each thread's Fast mode choice per model across thread switches and ap
 
 ![Turn on Fast mode in a thread; after switching threads or reloading, it is still on](screenshots/fast-mode-memory/flow.webp)
 
+### [Provider Hooks](plugins/provider-hooks)
+
+Lists your user-level Claude Code and Codex hooks on a lifecycle timeline, one provider at a time, and turns each hook on or off.
+
+![Provider Hooks: Claude Code hooks on the session lifecycle timeline, each with an on/off switch](screenshots/provider-hooks/claude.webp)
+
 ## Install
 
 Add the marketplace once, then install plugins from **Plugins** in BB or by catalog entry:
@@ -64,7 +70,7 @@ bb theme set plugin:graphite:graphite
 ## Restore everything on a new machine
 
 ```sh
-for id in graphite thread-view project-workspace fast-mode-memory; do
+for id in graphite thread-view project-workspace fast-mode-memory provider-hooks; do
   bb plugin install git:https://github.com/bxr5xrk/bb-plugins.git@main --plugin "$id" --yes
 done
 bb theme set plugin:graphite:graphite

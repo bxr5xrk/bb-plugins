@@ -18,6 +18,10 @@
     {
       "name": "fast-mode-memory",
       "source": "./plugins/fast-mode-memory"
+    },
+    {
+      "name": "provider-hooks",
+      "source": "./plugins/provider-hooks"
     }
   ]
 }

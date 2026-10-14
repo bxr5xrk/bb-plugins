@@ -123,6 +123,34 @@
         "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/fast-mode-memory/flow.webp"
       ],
       "overview": "Fast mode choices now survive leaving a chat and returning, even before a message is sent.\n\nThe plugin remembers each existing thread’s selected service tier separately for each provider and model. Turning Fast off is remembered too. Preferences survive reloading the app in the same browser or desktop profile.\n\nIt uses BB’s composer API and adds no controls. BB still decides which tiers a provider and model support. New-thread, queued-message, and sent-message editors are left to BB.\n\nPreferences stay in local app/browser storage and do not sync between devices. Disable Fast Mode Memory to return to BB’s native behavior.\n"
+    },
+    {
+      "id": "provider-hooks",
+      "displayName": "Provider Hooks",
+      "description": "Lists your user-level Claude Code and Codex hooks on a lifecycle timeline and turns each one on or off.",
+      "icon": "PlugZap",
+      "tags": [
+        "hooks",
+        "providers"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/provider-hooks",
+          "range": ">=0.1.0",
+          "tagPrefix": "provider-hooks/"
+        }
+      },
+      "category": "agents-and-providers",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/provider-hooks/claude.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/provider-hooks/codex.webp"
+      ],
+      "overview": "Provider Hooks lists your user-level Claude Code and Codex hooks on one settings page and lets you turn each hook on or off.\n\nClaude Code hooks come from `~/.claude/settings.json`. Turning one off removes it from the file and keeps a copy in plugin storage; turning it on puts it back in its original place. Codex hooks come from `~/.codex/hooks.json`; turning one off writes `enabled = false` into that hook's `[hooks.state]` table in `~/.codex/config.toml`.\n\nProject-level hooks are not shown. Hooks cannot be added, edited, or deleted here.\n"
     }
   ]
 }
