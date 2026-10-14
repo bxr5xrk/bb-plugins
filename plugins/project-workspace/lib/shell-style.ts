@@ -39,6 +39,9 @@ export const SHELL_CSS = `
     z-index: 2;
     background: var(--sidebar, var(--background));
   }
+  [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="footer"]:has([data-testid^="plugin-sidebar-footer-disclosure-"]) {
+    width: max(var(--project-workspace-rail-width, 200px), 300px);
+  }
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-projects {
     padding-bottom: var(--project-workspace-footer-height, 48px);
   }
@@ -68,7 +71,16 @@ export function mountShellStyle(_context: PluginContentScriptContext) {
     }
   }) : null;
   observer?.observe(root!, { attributes: true, subtree: true, attributeFilter: ["style"], attributeOldValue: true });
+  const closeFooterDisclosure = (event: PointerEvent) => {
+    if (!root?.querySelector("[data-project-workspace-sidebar]")) return;
+    const target = event.target;
+    if (!(target instanceof Element) || !root.contains(target) || target.closest('[data-sidebar="footer"]')) return;
+    const section = root.querySelector<HTMLElement>('[data-sidebar="footer"] section[id^="plugin-sidebar-footer-disclosure-"]');
+    if (!section) return;
+    document.getElementById(section.id.replace("plugin-sidebar-footer-disclosure-", "plugin-sidebar-footer-trigger-"))?.click();
+  };
+  document.addEventListener("pointerdown", closeFooterDisclosure, true);
   // The CSS becomes inert as soon as the slot unmounts. Disable removes the
   // exact injected node and plugin variable without touching native settings.
-  return () => { observer?.disconnect(); style.remove(); root?.style.removeProperty("--project-workspace-width"); };
+  return () => { observer?.disconnect(); document.removeEventListener("pointerdown", closeFooterDisclosure, true); style.remove(); root?.style.removeProperty("--project-workspace-width"); };
 }
