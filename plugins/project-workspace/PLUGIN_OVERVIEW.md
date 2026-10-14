@@ -1,35 +1,19 @@
-# Project Workspace
+A project-first sidebar for BB. Projects sit in a rail on the left, the selected project's sessions sit beside them, and an Explorer tab browses the project's files. The chat, composer, providers, and previews stay BB's own.
 
-Labelled navigation / reusable Bots profiles / project rail → agent or
-project Sessions / Profile / Memory / project Explorer → native BB chat and preview.
+## Projects and sessions
 
-Public frontend registrations: exclusive thread list `project-workspace/workspace`,
-host navigation activation bridge, mode and Session cards settings,
-invisible thread-header file-preview opener and scoped sizing content script.
+Pick a project in the rail to see its sessions, including projects that have none yet. Sessions keep BB's search, pins, drafts, read state, and live status: a spinner while an agent works, amber when it needs input, green for an unread reply, red for an error. Projects with activity show colored counts. Right-click a session for open, split, pin, rename, archive, or delete. Use **+** beside Projects to add a project by machine and folder.
 
-Backend owns private SQLite profiles, immutable chat bindings, project-scoped
-memory, revision/hash checks, full-state read receipts and idempotent operations.
-Legacy named-chat KV records remain available. Five scoped specialist tools supply
-full state, factual learning, peer lookup and explicitly authorized same-project
-coordination. Private typed UI RPCs are not exposed for agent discovery.
+Choose how much each session card shows under **Session cards**: Detailed, Compact, or Title only.
 
-The public Bots @ mention provider resolves immutable public identities only.
-Separate SOUL.md personality is private profile data, not a physical project file.
-Bot context menus and settings expose a shared named deletion confirmation
-with revision checks, safe cancellation and preserved native chats.
-Dismissible accessible settings, saved accordion state and
-32px smooth Pebble mascots reuse native/shared UI patterns. Pinned MIT
-bot-avatars 0.2.2 supplies the renderer; real working motion affects the whole
-body, questions use an attentive still pose, and reduced motion/collapsed or
-hidden content pauses rendering. Stored identities and colors are preserved.
+## Explorer
 
-Native SDK flows own composer execution, providers, permissions, open/split,
-read acknowledgement, project creation and previews. No custom provider, daemon,
-project file writes or conversation replacement. Explorer loads project roots
-without requiring a chat. Pinned precedes sections; attention sorts within groups.
-Selecting profiles/projects does not start work. Runtime status records full-state
-reads, not proof that instructions were obeyed. No provider was run during UI QA.
+The Explorer tab reads the project's folder as soon as you select the project, without opening a chat. Folders load as you expand them. Clicking a file opens it in BB's file preview. Explorer is read-only: it never edits files or runs commands.
 
-Read [README.md](README.md) for operation, persistence and constraints;
-[brief.md](brief.md), [design.md](design.md), [task.md](task.md) for accepted
-scope, source-backed decisions, current evidence and verification limits.
+## Bots
+
+Bots are reusable specialist profiles, such as a code reviewer or a release manager. Each has a name, a role, a mascot, instructions, a separate SOUL.md personality, and optional model defaults. Start a chat with a bot from its menu. Mentioning a bot with **@** references it in another chat without running it. Each bot keeps separate memory per project, which you can read and correct in its Memory tab. Bots can coordinate with each other only after you allow it for the current work.
+
+## Switching back
+
+Open Settings → Plugins → Project Workspace and choose **Default BB** to return to the standard thread list. Disabling the plugin does the same. Your projects, sessions, and chats are never moved or deleted.

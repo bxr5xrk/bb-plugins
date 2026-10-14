@@ -2,12 +2,37 @@
 
 Vasyl Dobrovolskyi's [BB](https://getbb.app) plugins, in one repository. Every plugin lives under `plugins/<id>/` as an ordinary plugin package with its own `package.json`, `.bb/plugins.json` indexes them as a collection, and `marketplace.json` lists them as a custom marketplace.
 
-| Plugin | Directory | What it does |
-| --- | --- | --- |
-| Graphite | [`plugins/graphite`](plugins/graphite) | A neutral graphite palette for light and dark mode with blurred sticky headers. |
-| Thread View | [`plugins/thread-view`](plugins/thread-view) | A wider thread with calmer reply typography and a compact prompt box with quiet Send controls. |
-| Project Workspace | [`plugins/project-workspace`](plugins/project-workspace) | Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat. |
-| Fast Mode Memory | [`plugins/fast-mode-memory`](plugins/fast-mode-memory) | Remembers each thread and model's Fast mode choice across navigation and reloads. |
+## Plugins
+
+### [Project Workspace](plugins/project-workspace)
+
+Adds a project rail with each project's Sessions, a read-only file Explorer, and reusable bot profiles, while the chat stays native BB.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="screenshots/project-workspace/sessions-dark.webp">
+  <img alt="Project Workspace: Bots and Projects in the left rail, the selected project's Sessions beside them, and the native BB chat" src="screenshots/project-workspace/sessions-light.webp">
+</picture>
+
+### [Thread View](plugins/thread-view)
+
+Widens the thread, softens reply typography, and slims the prompt box with quiet Send controls.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="screenshots/thread-view/compare-dark.webp">
+  <img alt="The same thread in BB's default layout (left) and with Thread View (right)" src="screenshots/thread-view/compare-light.webp">
+</picture>
+
+### [Graphite](plugins/graphite)
+
+Recolors BB in neutral graphite greys for light and dark mode, with sticky headers that blur what scrolls under them.
+
+![Graphite in dark mode (left) and light mode (right)](screenshots/graphite/split.webp)
+
+### [Fast Mode Memory](plugins/fast-mode-memory)
+
+Remembers each thread's Fast mode choice per model across thread switches and app reloads. It adds no controls of its own.
+
+![Turn on Fast mode in a thread; after switching threads or reloading, it is still on](screenshots/fast-mode-memory/flow.webp)
 
 ## Install
 

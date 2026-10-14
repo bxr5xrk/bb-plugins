@@ -2,6 +2,8 @@
 
 A BB theme plugin: a neutral graphite palette for light and dark mode, with sticky headers that blur the content scrolling under them.
 
+![Graphite in dark mode (left) and light mode (right): thread list, a reply with code, and a file preview](../../screenshots/graphite/split.webp)
+
 ## Behavior
 
 - Registers one theme through `bb.themes`: `plugin:graphite:graphite`.

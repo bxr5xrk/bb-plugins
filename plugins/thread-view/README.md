@@ -2,6 +2,11 @@
 
 A BB plugin for the thread screen: a wider chat column, reply typography tuned to the Claude desktop rhythm, and a compact prompt box with quiet Send controls.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../../screenshots/thread-view/compare-dark.webp">
+  <img alt="The same thread in BB's default layout (left) and with Thread View (right): wider column, softer reply text, blue links, red inline code, compact prompt box" src="../../screenshots/thread-view/compare-light.webp">
+</picture>
+
 ## Behavior
 
 Chat:

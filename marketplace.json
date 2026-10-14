@@ -1,6 +1,6 @@
 {
-  "$schema": "https://getbb.app/schemas/marketplace.schema.json",
-  "schemaVersion": 1,
+  "$schema": "https://getbb.app/schemas/marketplace-v2.schema.json",
+  "schemaVersion": 2,
   "name": "bxr5xrk",
   "displayName": "bxr5xrk's Plugins",
   "description": "Appearance, composer, chat and sidebar plugins Vasyl Dobrovolskyi maintains.",
@@ -8,7 +8,7 @@
     {
       "id": "graphite",
       "displayName": "Graphite",
-      "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
+      "description": "Recolors BB in neutral graphite greys for light and dark mode, with sticky headers that blur what scrolls under them.",
       "icon": "Palette",
       "tags": [
         "theme",
@@ -25,12 +25,19 @@
           "range": ">=0.1.0",
           "tagPrefix": "graphite/"
         }
-      }
+      },
+      "category": "themes-and-appearance",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/graphite/split.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/graphite/dark.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/graphite/light.webp"
+      ],
+      "overview": "A calm graphite look for BB in light and dark mode.\n\nThe theme swaps BB's colors for neutral graphite greys with soft borders, and sticky headers blur whatever scrolls under them instead of cutting it off.\n\nTurn it on with `bb theme set plugin:graphite:graphite`, and back off with `bb theme set default`.\n"
     },
     {
       "id": "thread-view",
       "displayName": "Thread View",
-      "description": "A wider thread with calmer reply typography and a compact prompt box with quiet Send controls.",
+      "description": "Widens the thread, softens reply typography, and slims the prompt box with quiet Send controls.",
       "icon": "MessageSquare",
       "tags": [
         "chat",
@@ -48,13 +55,21 @@
           "range": ">=0.1.0",
           "tagPrefix": "thread-view/"
         }
-      }
+      },
+      "category": "themes-and-appearance",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/thread-view/compare-dark.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/thread-view/compare-light.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/thread-view/thread-dark.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/thread-view/thread-light.webp"
+      ],
+      "overview": "An easier-to-read thread screen.\n\nThe chat uses more of a wide window while each paragraph keeps a comfortable line length. Replies use lighter, slightly smaller type with clear gaps between paragraphs, lists, and headings, close to the Claude desktop app, and links and inline code stand out in blue and red. The prompt box is shorter on desktop, and its Send button becomes a quiet icon like the controls next to it.\n\nOnly the look changes; messages, code blocks, tools, drafts, and shortcuts behave as before. Disable Thread View to get BB's original screen back.\n"
     },
     {
       "id": "project-workspace",
       "displayName": "Project Workspace",
-      "description": "Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat.",
-      "icon": "PanelsLeftBottom",
+      "description": "Adds a project rail with per-project Sessions, a read-only file Explorer, and reusable bot profiles.",
+      "icon": "PanelLeft",
       "tags": [
         "sidebar",
         "projects",
@@ -71,12 +86,21 @@
           "range": ">=0.1.0",
           "tagPrefix": "project-workspace/"
         }
-      }
+      },
+      "category": "thread-management",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/project-workspace/sessions-dark.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/project-workspace/explorer-dark.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/project-workspace/session-cards.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/project-workspace/sessions-light.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/project-workspace/explorer-light.webp"
+      ],
+      "overview": "A project-first sidebar for BB. Projects sit in a rail on the left, the selected project's sessions sit beside them, and an Explorer tab browses the project's files. The chat, composer, providers, and previews stay BB's own.\n\n## Projects and sessions\n\nPick a project in the rail to see its sessions, including projects that have none yet. Sessions keep BB's search, pins, drafts, read state, and live status: a spinner while an agent works, amber when it needs input, green for an unread reply, red for an error. Projects with activity show colored counts. Right-click a session for open, split, pin, rename, archive, or delete. Use **+** beside Projects to add a project by machine and folder.\n\nChoose how much each session card shows under **Session cards**: Detailed, Compact, or Title only.\n\n## Explorer\n\nThe Explorer tab reads the project's folder as soon as you select the project, without opening a chat. Folders load as you expand them. Clicking a file opens it in BB's file preview. Explorer is read-only: it never edits files or runs commands.\n\n## Bots\n\nBots are reusable specialist profiles, such as a code reviewer or a release manager. Each has a name, a role, a mascot, instructions, a separate SOUL.md personality, and optional model defaults. Start a chat with a bot from its menu. Mentioning a bot with **@** references it in another chat without running it. Each bot keeps separate memory per project, which you can read and correct in its Memory tab. Bots can coordinate with each other only after you allow it for the current work.\n\n## Switching back\n\nOpen Settings → Plugins → Project Workspace and choose **Default BB** to return to the standard thread list. Disabling the plugin does the same. Your projects, sessions, and chats are never moved or deleted.\n"
     },
     {
       "id": "fast-mode-memory",
       "displayName": "Fast Mode Memory",
-      "description": "Remember each thread and model’s Fast mode choice across navigation and app reloads.",
+      "description": "Remembers each thread’s Fast mode choice per model across thread switches and app reloads.",
       "icon": "Zap",
       "tags": [
         "models",
@@ -93,7 +117,12 @@
           "range": ">=0.1.0",
           "tagPrefix": "fast-mode-memory/"
         }
-      }
+      },
+      "category": "agents-and-providers",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/fast-mode-memory/flow.webp"
+      ],
+      "overview": "Fast mode choices now survive leaving a chat and returning, even before a message is sent.\n\nThe plugin remembers each existing thread’s selected service tier separately for each provider and model. Turning Fast off is remembered too. Preferences survive reloading the app in the same browser or desktop profile.\n\nIt uses BB’s composer API and adds no controls. BB still decides which tiers a provider and model support. New-thread, queued-message, and sent-message editors are left to BB.\n\nPreferences stay in local app/browser storage and do not sync between devices. Disable Fast Mode Memory to return to BB’s native behavior.\n"
     }
   ]
 }

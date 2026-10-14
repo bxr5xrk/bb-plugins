@@ -2,6 +2,8 @@
 
 A local BB plugin that remembers service-tier selections for existing thread composers. It fixes losing an unsent Fast mode choice when leaving a thread and returning.
 
+![Turn on Fast mode in a thread's model menu; after switching threads or reloading, the composer still shows the Fast bolt](../../screenshots/fast-mode-memory/flow.webp)
+
 ## Behavior
 
 - Saves a changed service tier per thread, provider, and model.

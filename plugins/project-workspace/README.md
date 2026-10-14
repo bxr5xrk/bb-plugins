@@ -5,6 +5,15 @@ selected-project sessions beside them, and an Explorer tab that opens files in
 BB's existing preview. BB continues to own the conversation, composer, providers,
 permissions, attachments, tools, live output, footer and right panels.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="../../screenshots/project-workspace/sessions-dark.webp">
+  <img alt="Project Workspace: Bots and Projects in the left rail, the selected project's Sessions beside them, and the native BB chat" src="../../screenshots/project-workspace/sessions-light.webp">
+</picture>
+
+| Explorer with BB's file preview | Session cards: Detailed, Compact, Title only |
+| --- | --- |
+| ![Explorer tab with the project file tree and pricing.ts open in BB's preview panel](../../screenshots/project-workspace/explorer-dark.webp) | ![The Sessions list in the three Session cards modes](../../screenshots/project-workspace/session-cards.webp) |
+
 ## Switch views
 
 Enable this plugin, open its configuration in BB Settings → Plugins → Project
@@ -226,33 +235,3 @@ revision-based mode switching/restoration, content-script disposal and compact
 navigation. The harness does not reproduce host layout or actual machine/network
 failures. Live BB checks remain necessary for experimental slots, desktop/narrow
 layout, file previews and disable/reload behavior.
-
-Canonical product contract: [brief.md](brief.md). Visual contract:
-[design.md](design.md). Integration evidence and remaining work:
-[task.md](task.md).
-
-## Current runtime evidence
-
-BB 0.46 recovery (2026-10-12): SDK 0.6.37 typecheck/build and 115 tests pass.
-The running plugin has a compatible bundle with no status error. Original Bots/
-Projects/Sessions/Explorer and native search/settings/confirmation were checked
-in the live BB web client, including mode restoration and page reload.
-[Current web screenshot](evidence/bb046-recovery/spacing-web.png) and
-[recovery record](task.md#bb-046-sidebar-recovery-2026-10-12). Host DOM selectors
-require fresh verification on future updates; a native application restart was
-not exercised. Earlier evidence below describes the preceding SDK version.
-
-
-Persistent specialists: actual BB web UI verified manual and real-skill creation,
-rename/reload persistence, native model picker, separate project memories and
-bounded native composer (cancelled without sending). Desktop, narrow navigation
-and exact320 CSS-pixel profile editor artifacts are linked from [task.md](task.md).
-The behavioral suite uses real SQLite plus an SDK harness for first-turn binding,
-scoped tools, retries, conflicts, full reads and consent lifecycle. No provider was
-started to demonstrate delegation or learning; those execution paths are harness
-verified. A read receipt is not proof that a provider obeyed the profile.
-
-Earlier W1–W6 live read/open/leave/reload, project Explorer without a chat and native
-sidebar observations remain historical evidence, with the later Pinned/context-menu
-contract superseding the single-list rule. Current checks and independent review
-limits: [product](workspace-product-check.md), [engineering](workspace-engineering-check.md).
