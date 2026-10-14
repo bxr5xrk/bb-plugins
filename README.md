@@ -4,7 +4,7 @@ Vasyl Dobrovolskyi's [BB](https://getbb.app) plugins, in one repository. Every p
 
 | Plugin | Directory | What it does |
 | --- | --- | --- |
-| Graphite Glass | [`plugins/graphite-glass`](plugins/graphite-glass) | A neutral graphite palette for light and dark mode. |
+| Graphite | [`plugins/graphite`](plugins/graphite) | A neutral graphite palette for light and dark mode. |
 | Thread View | [`plugins/thread-view`](plugins/thread-view) | A wider thread with calmer reply typography and a compact prompt box with quiet Send controls. |
 | Project Workspace | [`plugins/project-workspace`](plugins/project-workspace) | Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat. |
 | Session Card Layout | [`plugins/session-card-layout`](plugins/session-card-layout) | Current, two-line or one-line session cards in Project Workspace. Requires Project Workspace. |
@@ -31,19 +31,19 @@ Or pin a semver range over that plugin's release tags:
 bb plugin install git:https://github.com/bxr5xrk/bb-plugins.git@^0.1.0 --subdirectory plugins/thread-view --tag-prefix thread-view/
 ```
 
-Graphite Glass ships a theme, so activate it after installing:
+Graphite ships a theme, so activate it after installing:
 
 ```sh
-bb theme set plugin:graphite-glass:graphite-glass
+bb theme set plugin:graphite:graphite
 ```
 
 ## Restore everything on a new machine
 
 ```sh
-for id in graphite-glass thread-view project-workspace session-card-layout fast-mode-memory; do
+for id in graphite thread-view project-workspace session-card-layout fast-mode-memory; do
   bb plugin install git:https://github.com/bxr5xrk/bb-plugins.git@main --plugin "$id" --yes
 done
-bb theme set plugin:graphite-glass:graphite-glass
+bb theme set plugin:graphite:graphite
 ```
 
 To work on a plugin locally, install its directory instead: `bb plugin install ./plugins/<id> --yes`, then `npm run build && bb plugin reload <id>` after each edit. Installing a new path over an existing plugin keeps its settings; `bb plugin remove` deletes them.
@@ -58,7 +58,7 @@ Each plugin directory is self-contained: run `npm ci` inside it, then `npm run t
 
 ## When BB updates
 
-Graphite Glass only sets theme tokens, which BB supports through `bb.themes`. Thread View styles BB's own DOM, and Project Workspace also hides and drives parts of BB's shell. BB has no stable contract for that markup, so a release can rename an attribute or class and quietly undo a style.
+Graphite only sets theme tokens, which BB supports through `bb.themes`. Thread View styles BB's own DOM, and Project Workspace also hides and drives parts of BB's shell. BB has no stable contract for that markup, so a release can rename an attribute or class and quietly undo a style.
 
 [`scripts/check-selectors.mjs`](scripts/check-selectors.mjs) lists every BB attribute, test id, and class name the plugins depend on and looks each one up in the published `bb-app` bundle:
 

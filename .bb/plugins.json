@@ -4,8 +4,8 @@
   "name": "bxr5xrk-plugins",
   "plugins": [
     {
-      "name": "graphite-glass",
-      "source": "./plugins/graphite-glass"
+      "name": "graphite",
+      "source": "./plugins/graphite"
     },
     {
       "name": "thread-view",

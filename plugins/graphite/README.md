@@ -1,10 +1,10 @@
-# Graphite Glass
+# Graphite
 
 A BB theme plugin: a neutral graphite palette for light and dark mode.
 
 ## Behavior
 
-- Registers one theme through `bb.themes`: `plugin:graphite-glass:graphite-glass`.
+- Registers one theme through `bb.themes`: `plugin:graphite:graphite`.
 - Sets BB's color tokens for both `.light` and `.dark`.
 - Adds no settings, commands, or UI.
 
@@ -17,7 +17,7 @@ npm ci
 npm run typecheck
 npm run build
 bb plugin install . --yes
-bb theme set plugin:graphite-glass:graphite-glass
+bb theme set plugin:graphite:graphite
 ```
 
 To go back to BB's default theme: `bb theme set default`.

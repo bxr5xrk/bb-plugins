@@ -1,5 +1,5 @@
 {
-  "name": "bb-plugin-graphite-glass",
+  "name": "bb-plugin-graphite",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "bbPluginSdk": ">=0.6.37"
   },
   "bb": {
-    "name": "Graphite Glass",
+    "name": "Graphite",
     "description": "A neutral graphite palette for light and dark mode.",
     "branding": {
       "icon": "Palette"
@@ -16,10 +16,10 @@
     "server": "./server.ts",
     "themes": [
       {
-        "id": "graphite-glass",
-        "name": "Graphite Glass",
+        "id": "graphite",
+        "name": "Graphite",
         "description": "Neutral graphite chrome for light and dark mode.",
-        "css": "./themes/graphite-glass.css"
+        "css": "./themes/graphite.css"
       }
     ],
     "skills": []

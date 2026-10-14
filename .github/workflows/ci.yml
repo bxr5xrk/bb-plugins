@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [graphite-glass, thread-view, project-workspace, session-card-layout, fast-mode-memory]
+        plugin: [graphite, thread-view, project-workspace, session-card-layout, fast-mode-memory]
     defaults:
       run:
         working-directory: plugins/${{ matrix.plugin }}

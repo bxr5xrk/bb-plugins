@@ -6,8 +6,8 @@
   "description": "Appearance, composer, chat and sidebar plugins Vasyl Dobrovolskyi maintains.",
   "plugins": [
     {
-      "id": "graphite-glass",
-      "displayName": "Graphite Glass",
+      "id": "graphite",
+      "displayName": "Graphite",
       "description": "A neutral graphite palette for light and dark mode.",
       "icon": "Palette",
       "tags": [
@@ -21,9 +21,9 @@
       "source": {
         "git": {
           "url": "https://github.com/bxr5xrk/bb-plugins.git",
-          "subdir": "plugins/graphite-glass",
+          "subdir": "plugins/graphite",
           "range": ">=0.1.0",
-          "tagPrefix": "graphite-glass/"
+          "tagPrefix": "graphite/"
         }
       }
     },
