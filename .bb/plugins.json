@@ -1,0 +1,31 @@
+{
+  "$schema": "https://getbb.app/schemas/plugins.schema.json",
+  "schemaVersion": 1,
+  "name": "bxr5xrk-plugins",
+  "plugins": [
+    {
+      "name": "graphite-glass",
+      "source": "./plugins/graphite-glass"
+    },
+    {
+      "name": "composer",
+      "source": "./plugins/composer"
+    },
+    {
+      "name": "chat-reading",
+      "source": "./plugins/chat-reading"
+    },
+    {
+      "name": "project-workspace",
+      "source": "./plugins/project-workspace"
+    },
+    {
+      "name": "session-card-layout",
+      "source": "./plugins/session-card-layout"
+    },
+    {
+      "name": "fast-mode-memory",
+      "source": "./plugins/fast-mode-memory"
+    }
+  ]
+}

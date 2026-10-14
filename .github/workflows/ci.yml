@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  plugin:
+    name: ${{ matrix.plugin }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: [graphite-glass, composer, chat-reading, project-workspace, session-card-layout, fast-mode-memory]
+    defaults:
+      run:
+        working-directory: plugins/${{ matrix.plugin }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: plugins/${{ matrix.plugin }}/package-lock.json
+      - run: npm install --global bb-app@latest
+      - uses: actions/cache@v4
+        with:
+          path: ~/.bb/plugins/toolchain-*
+          key: bb-toolchain-${{ runner.os }}-${{ hashFiles(format('plugins/{0}/package-lock.json', matrix.plugin)) }}
+          restore-keys: bb-toolchain-${{ runner.os }}-
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test --if-present
+      - run: npm run build
+
+  selectors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node scripts/check-selectors.mjs latest

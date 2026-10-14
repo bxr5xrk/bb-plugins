@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.DS_Store
+plugins/*/task.md
+plugins/*/TASK.md
+plugins/*/brief.md
+plugins/*/design.md

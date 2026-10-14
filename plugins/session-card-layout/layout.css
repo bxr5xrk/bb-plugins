@@ -1,0 +1,34 @@
+html[data-bb-session-card-layout] .pw-session-link {
+  display: grid;
+  align-content: center;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 5px;
+  padding: 8px 11px;
+}
+html[data-bb-session-card-layout] .pw-session-headline,
+html[data-bb-session-card-layout] .pw-session-bottom { display: contents; }
+html[data-bb-session-card-layout] .pw-session-title { min-width: 0; padding-right: 0; }
+html[data-bb-session-card-layout] .pw-session-status { font-size: 10px; line-height: 13px; }
+html[data-bb-session-card-layout] .pw-session-headline time,
+html[data-bb-session-card-layout] .pw-session-headline kbd { justify-self: end; white-space: nowrap; }
+
+html[data-bb-session-card-layout="two-lines"] .pw-session { height: 60px; }
+html[data-bb-session-card-layout="two-lines"] .pw-session-link { grid-template-columns: minmax(0, 1fr) auto; }
+html[data-bb-session-card-layout="two-lines"] .pw-session-title { grid-area: 1 / 1; }
+html[data-bb-session-card-layout="two-lines"] .pw-session-status { grid-area: 1 / 2; justify-self: end; max-width: 120px; }
+html[data-bb-session-card-layout="two-lines"] .pw-session-preview { grid-area: 2 / 1; }
+html[data-bb-session-card-layout="two-lines"] .pw-session-headline time,
+html[data-bb-session-card-layout="two-lines"] .pw-session-headline kbd { grid-area: 2 / 2; }
+
+html[data-bb-session-card-layout="one-line"] .pw-session { height: 36px; }
+html[data-bb-session-card-layout="one-line"] .pw-session-link { grid-template-columns: minmax(0, 1fr) auto; padding-block: 6px; }
+html[data-bb-session-card-layout="one-line"] .pw-session-title { grid-area: 1 / 1; }
+html[data-bb-session-card-layout="one-line"] .pw-session-headline time,
+html[data-bb-session-card-layout="one-line"] .pw-session-headline kbd { grid-area: 1 / 2; }
+html[data-bb-session-card-layout="one-line"] .pw-session-preview { display: none; }
+html[data-bb-session-card-layout="one-line"] .pw-session-link:has(.pw-session-status) { grid-template-columns: 10px minmax(0, 1fr) auto; }
+html[data-bb-session-card-layout="one-line"] .pw-session-link:has(.pw-session-status) .pw-session-title { grid-area: 1 / 2; }
+html[data-bb-session-card-layout="one-line"] .pw-session-link:has(.pw-session-status) time,
+html[data-bb-session-card-layout="one-line"] .pw-session-link:has(.pw-session-status) kbd { grid-area: 1 / 3; }
+html[data-bb-session-card-layout="one-line"] .pw-session-status { grid-area: 1 / 1; width: 10px; height: 13px; font-size: 0; gap: 0; }

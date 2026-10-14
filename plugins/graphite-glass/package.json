@@ -1,0 +1,39 @@
+{
+  "name": "bb-plugin-graphite-glass",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "bb": ">=0.46",
+    "bbPluginSdk": ">=0.6.37"
+  },
+  "bb": {
+    "name": "Graphite Glass",
+    "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
+    "branding": {
+      "icon": "Palette"
+    },
+    "server": "./server.ts",
+    "themes": [
+      {
+        "id": "graphite-glass",
+        "name": "Graphite Glass",
+        "description": "Neutral graphite chrome with blurred sticky headers.",
+        "css": "./themes/graphite-glass.css"
+      }
+    ],
+    "skills": []
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.37",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.3.0",
+    "hono": "^4.13.13",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "bb plugin build"
+  }
+}

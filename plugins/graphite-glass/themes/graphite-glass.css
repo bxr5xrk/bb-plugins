@@ -1,0 +1,68 @@
+:root,
+.light {
+  --canvas: #f3f1ec;
+  --ink: #252724;
+  --primary: #35688c;
+  --primary-foreground: #ffffff;
+  --muted-foreground: color-mix(in oklch, var(--ink) 70%, var(--canvas));
+  --subtle-foreground: color-mix(in oklch, var(--ink) 58%, var(--canvas));
+  --readback-foreground: color-mix(in oklch, var(--ink) 64%, var(--canvas));
+  --destructive: #b64b43;
+  --destructive-foreground: #ffffff;
+  --destructive-text: #ab3d35;
+  --warning: #aa762d;
+  --warning-text: #846023;
+  --attention: #bf8142;
+  --success: #28784e;
+  --diff-added: #28784e;
+  --diff-removed: #ab3d35;
+  --pr-merged: #7866ad;
+  --file-accent: #35688c;
+  --radius: 0.8rem;
+}
+
+.dark {
+  --canvas: #191917;
+  --ink: #f4f3ef;
+  --muted-foreground: #aaa9a2;
+  --subtle-foreground: #96958e;
+  --readback-foreground: #a3a299;
+  --primary: #91bce5;
+  --primary-foreground: #18232c;
+  --card: #272724;
+  --popover: #272825;
+  --secondary: #2b2c28;
+  --accent: #30312d;
+  --muted: #30312e;
+  --border: rgb(244 243 239 / 10%);
+  --border-hairline: rgb(244 243 239 / 8%);
+  --border-seam: rgb(244 243 239 / 7%);
+  --input: rgb(244 243 239 / 18%);
+  --sidebar: #242422;
+  --sidebar-foreground: var(--ink);
+  --sidebar-accent: rgb(244 243 239 / 9%);
+  --sidebar-border: rgb(244 243 239 / 7%);
+  --surface-scrim: rgb(30 32 31 / 76%);
+  --surface-raised: rgb(244 243 239 / 5%);
+  --surface-recessed: rgb(0 0 0 / 14%);
+  --state-hover: rgb(244 243 239 / 6%);
+  --state-active: rgb(244 243 239 / 10%);
+  --surface-selected: rgb(145 188 229 / 11%);
+  --surface-selected-border: rgb(145 188 229 / 23%);
+  --destructive: #cf6255;
+  --destructive-foreground: #191917;
+  --destructive-text: #ef897b;
+  --warning: #d2a268;
+  --warning-text: #dfb47d;
+  --attention: #d39b61;
+  --success: #57c58e;
+  --diff-added: #57c58e;
+  --diff-removed: #ef897b;
+  --pr-merged: #a596d3;
+  --file-accent: #a8c7dc;
+}
+
+.bg-surface-scrim {
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  backdrop-filter: blur(16px) saturate(115%);
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://getbb.app/schemas/marketplace.schema.json",
+  "schemaVersion": 1,
+  "name": "bxr5xrk",
+  "displayName": "bxr5xrk's Plugins",
+  "description": "Appearance, composer, chat and sidebar plugins Vasyl Dobrovolskyi maintains.",
+  "plugins": [
+    {
+      "id": "graphite-glass",
+      "displayName": "Graphite Glass",
+      "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
+      "icon": "Palette",
+      "tags": [
+        "theme",
+        "appearance"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/graphite-glass",
+          "range": ">=0.1.0",
+          "tagPrefix": "graphite-glass/"
+        }
+      }
+    },
+    {
+      "id": "composer",
+      "displayName": "Glass Composer",
+      "description": "A compact glass prompt box with quiet Send controls.",
+      "icon": "SquarePen",
+      "tags": [
+        "composer",
+        "appearance"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/composer",
+          "range": ">=0.1.0",
+          "tagPrefix": "composer/"
+        }
+      }
+    },
+    {
+      "id": "chat-reading",
+      "displayName": "Chat Reading",
+      "description": "A wider chat column and calmer reply typography that reads like Claude desktop.",
+      "icon": "BookOpenText",
+      "tags": [
+        "chat",
+        "typography",
+        "appearance"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/chat-reading",
+          "range": ">=0.1.0",
+          "tagPrefix": "chat-reading/"
+        }
+      }
+    },
+    {
+      "id": "project-workspace",
+      "displayName": "Project Workspace",
+      "description": "Project rail with adjacent project Sessions and read-only Explorer, preserving native BB chat.",
+      "icon": "PanelsLeftBottom",
+      "tags": [
+        "sidebar",
+        "projects",
+        "bots"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/project-workspace",
+          "range": ">=0.1.0",
+          "tagPrefix": "project-workspace/"
+        }
+      }
+    },
+    {
+      "id": "session-card-layout",
+      "displayName": "Session Card Layout",
+      "description": "Choose current, two-line or one-line session cards in Project Workspace.",
+      "icon": "Rows3",
+      "tags": [
+        "sidebar",
+        "appearance"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/session-card-layout",
+          "range": ">=0.1.0",
+          "tagPrefix": "session-card-layout/"
+        }
+      }
+    },
+    {
+      "id": "fast-mode-memory",
+      "displayName": "Fast Mode Memory",
+      "description": "Remember each thread and model’s Fast mode choice across navigation and app reloads.",
+      "icon": "Zap",
+      "tags": [
+        "models",
+        "composer"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/fast-mode-memory",
+          "range": ">=0.1.0",
+          "tagPrefix": "fast-mode-memory/"
+        }
+      }
+    }
+  ]
+}
