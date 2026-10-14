@@ -8,12 +8,8 @@
       "source": "./plugins/graphite-glass"
     },
     {
-      "name": "composer",
-      "source": "./plugins/composer"
-    },
-    {
-      "name": "chat-reading",
-      "source": "./plugins/chat-reading"
+      "name": "thread-view",
+      "source": "./plugins/thread-view"
     },
     {
       "name": "project-workspace",

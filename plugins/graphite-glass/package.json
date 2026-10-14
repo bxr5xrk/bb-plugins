@@ -9,7 +9,7 @@
   },
   "bb": {
     "name": "Graphite Glass",
-    "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
+    "description": "A neutral graphite palette for light and dark mode.",
     "branding": {
       "icon": "Palette"
     },
@@ -18,7 +18,7 @@
       {
         "id": "graphite-glass",
         "name": "Graphite Glass",
-        "description": "Neutral graphite chrome with blurred sticky headers.",
+        "description": "Neutral graphite chrome for light and dark mode.",
         "css": "./themes/graphite-glass.css"
       }
     ],

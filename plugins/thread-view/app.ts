@@ -3,7 +3,7 @@ import "./app.css";
 
 export default definePluginApp((app) => {
   app.contentScripts.register({
-    id: "composer-styles",
+    id: "thread-view-styles",
     mount() {},
   });
 });

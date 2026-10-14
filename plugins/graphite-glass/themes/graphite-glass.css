@@ -61,8 +61,3 @@
   --pr-merged: #a596d3;
   --file-accent: #a8c7dc;
 }
-
-.bg-surface-scrim {
-  -webkit-backdrop-filter: blur(16px) saturate(115%);
-  backdrop-filter: blur(16px) saturate(115%);
-}

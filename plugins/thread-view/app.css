@@ -1,0 +1,119 @@
+/* Keep desktop conversation width independent of bottom-scroll anchoring. */
+@media (min-width: 768px) {
+  .thread-scrollbar[data-page-scroll-viewport] > div > [class~="max-w-[760px]"],
+  .chat-prompt-box[class~="max-w-[760px]"] {
+    max-width: 1100px;
+  }
+
+  [data-message-column] > [class~="group/message"],
+  [data-timeline-row-id] [class~="max-w-[70%]"]:has(> [data-sent-message-inline-editor-host]) {
+    max-width: 85%;
+  }
+}
+
+/* Chat prose tuned to the Claude desktop rhythm: 14/20 type, thin smoothing. */
+[data-markdown-preview] {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark [data-markdown-preview] {
+  color: #f0efec;
+}
+
+[data-markdown-preview] :is(p, ul, ol, blockquote, h1, h2, h3, h4, h5, h6) {
+  max-width: 76ch;
+}
+
+[data-markdown-preview] p {
+  margin-bottom: 14px;
+}
+
+[data-markdown-preview] :is(ul, ol) {
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+[data-markdown-preview] li {
+  margin-bottom: 6px;
+}
+
+[data-markdown-preview] li > :is(ul, ol) {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+[data-markdown-preview] :is(h1, h2, h3, h4) {
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+[data-markdown-preview] :is(strong, b) {
+  font-weight: 600;
+}
+
+[data-markdown-preview] > :last-child,
+[data-markdown-preview] > * > :last-child {
+  margin-bottom: 0;
+}
+
+[data-markdown-preview] code:not(pre code) {
+  font-size: 0.86em;
+}
+
+:root,
+.light {
+  --promptbox-edge: rgb(37 39 36 / 12%);
+  --promptbox-shadow: 0 8px 24px rgb(30 35 30 / 7%);
+}
+
+.dark {
+  --promptbox-edge: rgb(244 243 239 / 11%);
+  --promptbox-shadow: 0 10px 30px rgb(0 0 0 / 13%);
+}
+
+[data-promptbox] {
+  border-color: var(--promptbox-edge);
+  border-radius: 18px;
+  box-shadow: var(--promptbox-shadow), inset 0 1px 0 rgb(255 255 255 / 3%);
+}
+
+/* Send and its menu use the same quiet icon treatment as the other controls. */
+[data-promptbox] [data-promptbox-send-menu] {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+[data-promptbox] [data-promptbox-submit-action],
+[data-promptbox] [data-promptbox-send-menu] > button {
+  background-color: transparent !important;
+  color: var(--foreground) !important;
+  border-radius: 6px;
+}
+
+@layer utilities {
+  [data-promptbox] [data-promptbox-submit-action]:hover,
+  [data-promptbox] [data-promptbox-submit-group] [data-promptbox-send-menu] > button:hover {
+    background-color: var(--state-hover) !important;
+  }
+
+  [data-promptbox] [data-promptbox-submit-group] [data-promptbox-send-menu] > button[data-state="open"] {
+    background-color: var(--state-active) !important;
+  }
+}
+
+/* A compact desktop composer with balanced text and control spacing. */
+@media (min-width: 768px) {
+  [data-promptbox]:not([data-promptbox-compact]) [data-promptbox-editor-scroll] {
+    min-height: 0 !important;
+    padding-top: 12px;
+    padding-bottom: 4px;
+  }
+
+  [data-promptbox]:not([data-promptbox-compact]) [data-promptbox-action-row] {
+    padding: 4px 12px 12px;
+  }
+}

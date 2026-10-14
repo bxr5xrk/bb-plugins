@@ -7,8 +7,7 @@ const q = "[`\"']";
 const attr = (name, value) => new RegExp(`"${name}":${q}${value}${q}`);
 
 const selectors = {
-  "graphite-glass": ["bg-surface-scrim"],
-  composer: [
+  "thread-view": [
     /"data-promptbox":/,
     "data-promptbox-submit-action",
     "data-promptbox-send-menu",
@@ -16,8 +15,6 @@ const selectors = {
     "data-promptbox-editor-scroll",
     "data-promptbox-action-row",
     "data-promptbox-compact",
-  ],
-  "chat-reading": [
     "data-markdown-preview",
     "max-w-[760px]",
     "thread-scrollbar",

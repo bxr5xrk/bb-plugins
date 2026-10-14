@@ -8,7 +8,7 @@
     {
       "id": "graphite-glass",
       "displayName": "Graphite Glass",
-      "description": "A neutral graphite palette for light and dark mode with blurred sticky headers.",
+      "description": "A neutral graphite palette for light and dark mode.",
       "icon": "Palette",
       "tags": [
         "theme",
@@ -28,11 +28,12 @@
       }
     },
     {
-      "id": "composer",
-      "displayName": "Glass Composer",
-      "description": "A compact glass prompt box with quiet Send controls.",
-      "icon": "SquarePen",
+      "id": "thread-view",
+      "displayName": "Thread View",
+      "description": "A wider thread with calmer reply typography and a compact prompt box with quiet Send controls.",
+      "icon": "MessageSquare",
       "tags": [
+        "chat",
         "composer",
         "appearance"
       ],
@@ -43,32 +44,9 @@
       "source": {
         "git": {
           "url": "https://github.com/bxr5xrk/bb-plugins.git",
-          "subdir": "plugins/composer",
+          "subdir": "plugins/thread-view",
           "range": ">=0.1.0",
-          "tagPrefix": "composer/"
-        }
-      }
-    },
-    {
-      "id": "chat-reading",
-      "displayName": "Chat Reading",
-      "description": "A wider chat column and calmer reply typography that reads like Claude desktop.",
-      "icon": "BookOpenText",
-      "tags": [
-        "chat",
-        "typography",
-        "appearance"
-      ],
-      "author": {
-        "name": "Vasyl Dobrovolskyi",
-        "github": "bxr5xrk"
-      },
-      "source": {
-        "git": {
-          "url": "https://github.com/bxr5xrk/bb-plugins.git",
-          "subdir": "plugins/chat-reading",
-          "range": ">=0.1.0",
-          "tagPrefix": "chat-reading/"
+          "tagPrefix": "thread-view/"
         }
       }
     },

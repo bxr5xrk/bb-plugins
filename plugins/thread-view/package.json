@@ -1,5 +1,5 @@
 {
-  "name": "bb-plugin-composer",
+  "name": "bb-plugin-thread-view",
   "version": "0.1.0",
   "type": "module",
   "license": "MIT",
@@ -8,10 +8,10 @@
     "bbPluginSdk": ">=0.6.37"
   },
   "bb": {
-    "name": "Glass Composer",
-    "description": "A compact glass prompt box with quiet Send controls.",
+    "name": "Thread View",
+    "description": "A wider thread with calmer reply typography and a compact prompt box with quiet Send controls.",
     "branding": {
-      "icon": "SquarePen"
+      "icon": "MessageSquare"
     },
     "server": "./server.ts",
     "app": "./app.ts",
