@@ -82,6 +82,14 @@ describe("Visual correction behavior", () => {
     await slot.findByText("Create a specialist from a skill or your own instructions.");
     expect(list).toHaveBeenCalledTimes(2);
   });
+  it("lost realtime connection does not surface an agent load failure", async () => {
+    const list = vi.fn().mockResolvedValueOnce({ profiles: [], bindings: [], legacy: [] }).mockRejectedValue(new Error("Failed to fetch"));
+    const slot = setup(undefined, { rpc: { listSpecialists: list } });
+    await slot.findByText("Create a specialist from a skill or your own instructions.");
+    await slot.setRealtimeConnectionState("reconnecting");
+    await waitFor(() => expect(slot.queryByRole("alert")).toBeNull());
+    expect(list).toHaveBeenCalledTimes(1);
+  });
   it("navigation activates native BB controls without removed SDK hooks", () => {
     const host = document.createElement("nav");
     host.setAttribute("aria-label", "Primary navigation");

@@ -16,6 +16,7 @@ export function useWorkspaceAgents() {
   useRealtime("agents-changed", () => setVersion(value => value + 1));
   const refresh = () => setVersion(value => value + 1);
   useEffect(() => {
+    if (connection !== "connected") return;
     let cancelled = false; setLoading(true); setError(null);
     void rpc.call("listSpecialists").then(result => {
       if (cancelled) return;
