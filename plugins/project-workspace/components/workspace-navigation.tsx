@@ -5,7 +5,7 @@ import { Icon } from "./ui/icon";
 // to host-rendered controls, retaining native search, routes and shortcuts.
 export function activateHostNavigation(id: string): boolean {
   const selector = id === "settings"
-    ? 'nav[aria-label="Primary navigation"] > button[aria-label^="Settings"]'
+    ? '[data-testid="sidebar-footer-row"] button[aria-label^="Settings"]'
     : `[data-nav-rail-item="${id}"] button`;
   const target = document.querySelector<HTMLButtonElement>(selector);
   if (!target || target.disabled) return false;

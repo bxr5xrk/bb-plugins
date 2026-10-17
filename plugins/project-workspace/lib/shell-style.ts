@@ -21,6 +21,15 @@ export const SHELL_CSS = `
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-footer-item="plugin:project-workspace/settings"] {
     order: -1;
   }
+  [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="sidebar-footer-row"] > div:has(> button[aria-label^="Settings"]) {
+    display: none;
+  }
+  [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="app-sidebar-body"] > div:has(> section[id^="plugin-sidebar-footer-disclosure-"]) {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    background: var(--sidebar, var(--background));
+  }
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]),
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="gap"],
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="panel"] {
@@ -44,6 +53,14 @@ export const SHELL_CSS = `
   }
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-projects {
     padding-bottom: var(--project-workspace-footer-height, 48px);
+  }
+  [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="sidebar-footer-row"] > [data-sidebar="collapsible-body"] {
+    clip-path: none;
+  }
+  [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="app-sidebar-body"] > div:has(> section[id^="plugin-sidebar-footer-disclosure-"]) {
+    bottom: var(--project-workspace-footer-height, 48px);
+    right: auto;
+    width: max(var(--project-workspace-rail-width, 200px), 300px);
   }
 }
 `;
@@ -75,8 +92,8 @@ export function mountShellStyle(_context: PluginContentScriptContext) {
     if (!root?.querySelector("[data-project-workspace-sidebar]")) return;
     const target = event.target;
     if (!(target instanceof Element) || !root.contains(target) || target.closest('[data-sidebar="footer"]')) return;
-    const section = root.querySelector<HTMLElement>('[data-sidebar="footer"] section[id^="plugin-sidebar-footer-disclosure-"]');
-    if (!section) return;
+    const section = root.querySelector<HTMLElement>('section[id^="plugin-sidebar-footer-disclosure-"]');
+    if (!section || section.contains(target)) return;
     document.getElementById(section.id.replace("plugin-sidebar-footer-disclosure-", "plugin-sidebar-footer-trigger-"))?.click();
   };
   document.addEventListener("pointerdown", closeFooterDisclosure, true);
