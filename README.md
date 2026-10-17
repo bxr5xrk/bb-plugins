@@ -100,6 +100,14 @@ node scripts/check-selectors.mjs /Applications/bb.app/Contents/Resources/app.asa
 
 CI runs it, together with typecheck, tests, and a build of every plugin against the latest `bb-app`, on every push and every Monday. A red `selectors` job names the plugin and the selector that disappeared; find its replacement in the new bundle, update the plugin CSS and the list, and release a patch.
 
+A selector can survive while BB moves its element, so the lookup stays green while a plugin breaks. [`scripts/smoke-bb.mjs`](scripts/smoke-bb.mjs) catches that: it opens your running BB in headless Chrome and checks Project Workspace's sidebar, footer, Settings, and footer popups at two widths:
+
+```sh
+node scripts/smoke-bb.mjs   # needs Google Chrome and a running BB; prints PASS/FAIL and a screenshots folder
+```
+
+The [`bb-update`](.claude/skills/bb-update/SKILL.md) skill runs both checks after a BB update, repairs what broke, and re-checks.
+
 ## License
 
 [MIT](LICENSE).

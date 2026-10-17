@@ -37,10 +37,13 @@ const selectors = {
     "data-nav-rail-item",
     "data-footer-item",
     "data-framed",
-    "Primary navigation",
+    "sidebar-footer-row",
+    "plugin-sidebar-footer-disclosure-",
+    "plugin-sidebar-footer-trigger-",
     attr("data-sidebar", "panel"),
     attr("data-sidebar", "gap"),
     attr("data-sidebar", "footer"),
+    attr("data-sidebar", "collapsible-body"),
   ],
 };
 
