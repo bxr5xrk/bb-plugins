@@ -16,12 +16,14 @@ bb --version
 bb plugin list            # every plugin from this repo must be `running`
 node scripts/check-selectors.mjs /Applications/bb.app/Contents/Resources/app.asar.unpacked/node_modules/bb-app/app/dist/assets
 node scripts/smoke-bb.mjs # live headless check against the running local BB
+node scripts/check-narration-patch.mjs # Thread View patched the installed Claude Code provider
 ```
 
 - `check-selectors.mjs` only proves a string still exists in the bundle. It passes when BB moves an element elsewhere, so a green result is not enough.
 - `smoke-bb.mjs` opens the local BB (`serverUrl` from `~/.bb/bb-app-runtime.json`) in headless Chrome at 1400px and 900px and checks Project Workspace behaviour. Read every screenshot in the printed directory too: it catches visual breakage the checks miss (wrong background, double icons, clipped footer).
 - For each plugin from this repo that is not `running`, run `bb plugin logs <id>`.
-- Thread View and Graphite have no live checks. Rely on `check-selectors.mjs` for them.
+- Thread View styles and Graphite have no live checks. Rely on `check-selectors.mjs` for them.
+- `check-narration-patch.mjs` checks that Thread View patched `provider-claude-code/dist/host.js` (narration shown as agent messages) and that the file still matches `artifactDigest` in `host.meta.json`. With a version argument (`latest`, `0.46.2-nightly...`) it checks a bb-app release from npm before you install it. If it fails, read `bb plugin logs thread-view`: `narration patch: unsupported` means the provider's `extractAssistantText` changed shape, so find it in the new `host.js` and update `EXTRACT_TEXT_PATTERN` and `EXTRACT_TEXT_PATCHED` in `plugins/thread-view/server.ts`.
 
 ## 2. Locate the new markup
 
@@ -35,7 +37,7 @@ When structure matters (positions, stacking, `clip-path`, which element is hidde
 
 ## 3. Fix
 
-- Host-coupled code: `plugins/project-workspace/lib/shell-style.ts` (CSS and the outside-click handler), `plugins/project-workspace/components/workspace-navigation.tsx` (clicks native controls), `plugins/thread-view/app.css`, `plugins/graphite/themes/`.
+- Host-coupled code: `plugins/project-workspace/lib/shell-style.ts` (CSS and the outside-click handler), `plugins/project-workspace/components/workspace-navigation.tsx` (clicks native controls), `plugins/thread-view/app.css`, `plugins/thread-view/server.ts` (the provider patch), `plugins/graphite/themes/`.
 - Keep each fix minimal and scoped to the workspace-active `:has(...)` prefix already in use.
 - In the plugin directory, run `npm run typecheck`, `npm test`, `bb plugin build .` and `bb plugin reload <id>`.
 - Re-run step 1 until everything passes. Look at the screenshots again.

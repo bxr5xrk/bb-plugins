@@ -23,6 +23,12 @@ Prompt box:
 - Makes Send and its menu transparent icon buttons that tint on hover instead of a filled accent button.
 - On screens 768px and wider, removes the editor's minimum height and tightens the editor and action-row padding.
 
+Narration:
+
+- Claude Code sends the short updates an agent writes between tool calls as `thinking` blocks whose signature marks them as `narration`. BB's built-in `provider-claude-code` turns every thinking block into a collapsed "Thought" row, so text written before `AskUserQuestion` or another tool stays hidden.
+- On load, the plugin patches `provider-claude-code/dist/host.js` inside the BB app so narration blocks also produce a regular agent message, rewrites `artifactDigest` in `host.meta.json`, and reloads `provider-claude-code`. That reload restarts running Claude Code turns.
+- The patch is skipped when already applied, and logged as `unsupported` when a BB release changes the patched function. A BB update replaces the file, and the plugin patches it again on the next load. Disabling the plugin does not undo the patch; reinstalling or updating BB does.
+
 Adds no settings, commands, or UI. Disabling the plugin returns to BB's native thread screen.
 
 The styles ship as `app.css`, which BB keeps loaded while the plugin's content script is registered. The rules are unlayered, so they win over BB's Tailwind utilities.
