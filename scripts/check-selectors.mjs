@@ -45,6 +45,12 @@ const selectors = {
     attr("data-sidebar", "footer"),
     attr("data-sidebar", "collapsible-body"),
   ],
+  "skill-lens": [
+    "-sidebar-body",
+    "app-layout-content-shell",
+    "?view=library",
+    "bg-sidebar-accent",
+  ],
 };
 
 const fetchAssets = (version) => {

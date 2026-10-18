@@ -22,6 +22,10 @@
     {
       "name": "provider-hooks",
       "source": "./plugins/provider-hooks"
+    },
+    {
+      "name": "skill-lens",
+      "source": "./plugins/skill-lens"
     }
   ]
 }

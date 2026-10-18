@@ -37,7 +37,7 @@ When structure matters (positions, stacking, `clip-path`, which element is hidde
 
 ## 3. Fix
 
-- Host-coupled code: `plugins/project-workspace/lib/shell-style.ts` (CSS and the outside-click handler), `plugins/project-workspace/components/workspace-navigation.tsx` (clicks native controls), `plugins/thread-view/app.css`, `plugins/thread-view/server.ts` (the provider patch), `plugins/graphite/themes/`.
+- Host-coupled code: `plugins/project-workspace/lib/shell-style.ts` (CSS and the outside-click handler), `plugins/project-workspace/components/workspace-navigation.tsx` (clicks native controls), `plugins/thread-view/app.css`, `plugins/thread-view/server.ts` (the provider patch), `plugins/graphite/themes/`, `plugins/skill-lens/components/skills-tab.tsx`, `plugins/skill-lens/components/skill-lens.tsx` and `plugins/skill-lens/skill-lens.css` (the Skill lens tab, the cards copied from native Browse skills markup, and the hidden native Skills content).
 - Keep each fix minimal and scoped to the workspace-active `:has(...)` prefix already in use.
 - In the plugin directory, run `npm run typecheck`, `npm test`, `bb plugin build .` and `bb plugin reload <id>`.
 - Re-run step 1 until everything passes. Look at the screenshots again.

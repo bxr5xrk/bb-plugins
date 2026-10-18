@@ -145,6 +145,30 @@ for (const width of widths) {
     await sleep(800);
     assert(!(await disclosureOpen()), "still open");
   });
+
+  await check(width, "skill-lens tab replaces My skills content", async () => {
+    await open("/skills?view=library");
+    await sleep(1500);
+    const tab = "[data-skill-lens-tab]";
+    if (!(await evaluate((s) => !!document.querySelector(s), tab))) return "skip";
+    await click(tab);
+    await sleep(2000);
+    await screenshot(`${width}-skill-lens`);
+    const state = await evaluate(() => {
+      const main = document.querySelector('[data-testid="app-layout-content-shell"] > main');
+      if (!main?.querySelector(".sl-root")?.checkVisibility()) return "skill lens not visible";
+      const native = [...main.children].filter((n) => !n.classList.contains("sl-root") && n.checkVisibility());
+      return native.length ? `${native.length} native block(s) still visible` : "";
+    });
+    assert(!state, state);
+    await click('.sl-root button[aria-label^="View details for"]');
+    await sleep(2500);
+    await screenshot(`${width}-skill-lens-page`);
+    assert(await evaluate(() => !!document.querySelector(".sl-page .sl-file[aria-pressed=true]")?.checkVisibility()), "skill page shows no selected file");
+    await evaluate(() => [...document.querySelectorAll('[data-testid="skills-sidebar-body"] a')].find((a) => a.textContent === "My skills")?.click());
+    await sleep(800);
+    assert(!(await evaluate(() => !!document.querySelector(".sl-root"))), "skill lens stayed after native tab click");
+  });
 }
 
 ws.close();

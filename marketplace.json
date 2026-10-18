@@ -151,6 +151,35 @@
         "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/provider-hooks/codex.webp"
       ],
       "overview": "Provider Hooks lists your user-level Claude Code and Codex hooks on one settings page and lets you turn each hook on or off.\n\nClaude Code hooks come from `~/.claude/settings.json`. Turning one off removes it from the file and keeps a copy in plugin storage; turning it on puts it back in its original place. Codex hooks come from `~/.codex/hooks.json`; turning one off writes `enabled = false` into that hook's `[hooks.state]` table in `~/.codex/config.toml`.\n\nProject-level hooks are not shown. Hooks cannot be added, edited, or deleted here.\n"
+    },
+    {
+      "id": "skill-lens",
+      "displayName": "Skill Lens",
+      "description": "Adds a Skill lens tab to the Skills screen: every skill with its agents, usage count and files, symlinked skills included.",
+      "icon": "Folder",
+      "tags": [
+        "skills",
+        "files",
+        "usage"
+      ],
+      "author": {
+        "name": "Vasyl Dobrovolskyi",
+        "github": "bxr5xrk"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/bxr5xrk/bb-plugins.git",
+          "subdir": "plugins/skill-lens",
+          "range": ">=0.1.0",
+          "tagPrefix": "skill-lens/"
+        }
+      },
+      "category": "agents-and-providers",
+      "screenshots": [
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/skill-lens/cards.webp",
+        "https://raw.githubusercontent.com/bxr5xrk/bb-plugins/main/screenshots/skill-lens/page.webp"
+      ],
+      "overview": "Skill Lens adds a Skill lens tab next to Browse skills and My skills.\n\nEach skill gets one card, even when several agents have it: the card shows every agent's logo (bb for plugin skills), where the skill comes from, and how often it was used. The most used skills come first, on the full list and in search results. Claude Code usage is counted exactly from `~/.claude/projects`; Codex (`~/.codex/sessions`) and Cursor CLI (`~/.cursor/chats`) usage is estimated from skill file reads and is marked with `~`.\n\nA card opens the skill's page: every file in its folder as a tree, Markdown rendered with a Source toggle, other text files as highlighted code. Skills whose folder is a symlink open too. When agents have the same skill in different folders, the page switches between them.\n\nDependency folders (`node_modules`, `.venv`, `__pycache__`, `.git`) are skipped, and files over 1 MB or binary files show no preview. Files are read-only here.\n"
     }
   ]
 }

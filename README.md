@@ -40,6 +40,14 @@ Lists your user-level Claude Code and Codex hooks on a lifecycle timeline, one p
 
 ![Provider Hooks: Claude Code hooks on the session lifecycle timeline, each with an on/off switch](screenshots/provider-hooks/claude.webp)
 
+### [Skill Lens](plugins/skill-lens)
+
+Adds a Skill lens tab next to Browse skills and My skills. Every skill gets one card with the logos of the agents it is installed for, its source and how often it was used, most used first. A card opens the skill's folder as a file tree with rendered Markdown and highlighted code, symlinked skills included.
+
+![Skill Lens: skill cards with agent logos, sources and usage counts](screenshots/skill-lens/cards.webp)
+
+![Skill Lens: the google-cloud-logs page with its file tree and rendered SKILL.md](screenshots/skill-lens/page.webp)
+
 ## Install
 
 Add the marketplace once, then install plugins from **Plugins** in BB or by catalog entry:
@@ -70,7 +78,7 @@ bb theme set plugin:graphite:graphite
 ## Restore everything on a new machine
 
 ```sh
-for id in graphite thread-view project-workspace fast-mode-memory provider-hooks; do
+for id in graphite thread-view project-workspace fast-mode-memory provider-hooks skill-lens; do
   bb plugin install git:https://github.com/bxr5xrk/bb-plugins.git@main --plugin "$id" --yes
 done
 bb theme set plugin:graphite:graphite
