@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readdirSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -30,20 +30,13 @@ const selectors = {
   "project-workspace": [
     "app-layout-root",
     "app-sidebar-body",
-    "app-nav-rail",
     "app-sidebar-top-reserve-row",
-    "nav-rail-header",
+    "sidebar-navigation-rail",
     "nav-rail-sidebar-body",
-    "data-nav-rail-item",
-    "data-footer-item",
+    "sidebar-footer-body",
     "data-framed",
-    "sidebar-footer-row",
-    "plugin-sidebar-footer-disclosure-",
-    "plugin-sidebar-footer-trigger-",
     attr("data-sidebar", "panel"),
     attr("data-sidebar", "gap"),
-    attr("data-sidebar", "footer"),
-    attr("data-sidebar", "collapsible-body"),
   ],
   "skill-lens": [
     "-sidebar-body",
@@ -56,16 +49,17 @@ const selectors = {
 const fetchAssets = (version) => {
   const dir = mkdtempSync(join(tmpdir(), "bb-app-"));
   const tarball = execFileSync("npm", ["pack", `bb-app@${version}`, "--silent", "--pack-destination", dir], { encoding: "utf8" }).trim().split("\n").pop();
-  execFileSync("tar", ["-xzf", join(dir, tarball), "-C", dir, "package/app/dist/assets", "package/package.json"]);
+  execFileSync("tar", ["-xzf", join(dir, tarball), "-C", dir, "package/app/dist/assets", "package/server/dist/builtin-plugins", "package/package.json"]);
   const { version: resolved } = JSON.parse(readFileSync(join(dir, "package/package.json"), "utf8"));
   return { assets: join(dir, "package/app/dist/assets"), resolved };
 };
 
 const [arg = "latest"] = process.argv.slice(2);
 const { assets, resolved } = arg.includes("/") ? { assets: arg, resolved: arg } : fetchAssets(arg);
-const bundle = readdirSync(assets)
-  .filter((file) => /\.(js|css)$/.test(file))
-  .map((file) => readFileSync(join(assets, file), "utf8"))
+const builtins = join(assets, "../../../server/dist/builtin-plugins");
+const dirs = [assets, ...(existsSync(builtins) ? readdirSync(builtins).map((name) => join(builtins, name, "dist")).filter(existsSync) : [])];
+const bundle = dirs
+  .flatMap((dir) => readdirSync(dir).filter((file) => /\.(js|css)$/.test(file)).map((file) => readFileSync(join(dir, file), "utf8")))
   .join("\n");
 
 let missing = 0;

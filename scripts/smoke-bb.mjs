@@ -5,7 +5,15 @@ import { join } from "node:path";
 
 const base = process.env.BB_URL ?? JSON.parse(readFileSync(join(homedir(), ".bb/bb-app-runtime.json"), "utf8")).serverUrl;
 const chrome = process.env.CHROME ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-const widths = [1400, 900];
+const passes = [{ width: 1400 }, { width: 900 }, { width: 1400, framed: true }];
+// Desktop BB frames the window when window.bbDesktop exists; this stub is just enough to boot that layout.
+const desktopStub = `(() => {
+  const ret = Object.assign(() => {}, { then: (r, j) => Promise.resolve(undefined).then(r, j), catch: () => Promise.resolve(), finally: (f) => Promise.resolve().finally(f) });
+  const pick = (p) => typeof p !== "string" ? undefined : p === "toString" || p === "valueOf" ? () => "" : /^(is|has)[A-Z]/.test(p) ? false : /^on[A-Z]/.test(p) ? () => () => {} : deep;
+  const deep = new Proxy(function () {}, { get: (t, p) => p === "then" ? undefined : p === "prototype" ? t.prototype : pick(p), apply: () => ret });
+  const base = { platform: "macos", macosTrafficLightInset: 17, macosTrafficLightTopInset: 15, getWindowState: () => Promise.resolve({ isFullScreen: false }), getInfo: () => Promise.resolve({ platform: "macos" }) };
+  window.bbDesktop = new Proxy(base, { get: (t, p) => p in t ? t[p] : pick(p) });
+})();`;
 const out = mkdtempSync(join(tmpdir(), "bb-smoke-"));
 const profile = mkdtempSync(join(tmpdir(), "bb-smoke-profile-"));
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -78,82 +86,127 @@ await send("Page.enable");
 await send("Runtime.enable");
 await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "dark" }] });
 
-for (const width of widths) {
+for (const pass of passes) {
+  const { width } = pass, tag = pass.framed ? `${width}f` : width;
+  const stub = pass.framed ? await send("Page.addScriptToEvaluateOnNewDocument", { source: desktopStub }) : null;
   await send("Emulation.setDeviceMetricsOverride", { width, height: 900, deviceScaleFactor: 1, mobile: false });
   await open("/");
-  await screenshot(`${width}-home`);
+  await screenshot(`${tag}-home`);
 
-  await check(width, "project-workspace sidebar mounted", async () => {
+  await check(tag, "project-workspace sidebar mounted", async () => {
     assert(await evaluate(() => !!document.querySelector("[data-project-workspace-sidebar]")), "[data-project-workspace-sidebar] not rendered");
   });
-  await check(width, "one visible Settings control", async () => {
+  await check(tag, "one visible Settings control", async () => {
     const count = await evaluate(() => [...document.querySelectorAll('[data-sidebar="panel"] button[aria-label^="Settings"]')].filter((e) => e.checkVisibility()).length);
     assert(count === 1, `${count} visible Settings buttons`);
   });
-  await check(width, "sidebar footer visible and clickable", async () => {
+  await check(tag, "footer shows only usage, in rail above Settings", async () => {
     const state = await evaluate(() => {
-      const footer = document.querySelector('[data-sidebar="footer"]');
-      if (!footer?.checkVisibility()) return "footer hidden";
-      const r = footer.getBoundingClientRect();
-      if (r.height < 1 || r.bottom > innerHeight + 1) return `footer off-screen ${Math.round(r.y)}+${Math.round(r.height)}`;
-      const hit = document.elementFromPoint(r.x + 12, r.y + r.height / 2);
-      return footer.contains(hit) ? "" : `footer covered by ${hit?.className.toString().split(" ")[0]}`;
+      const items = [...document.querySelectorAll('[data-testid="sidebar-footer-body"] button, [data-testid="sidebar-footer-body"] a')].filter((e) => e.checkVisibility());
+      if (items.length !== 1 || items[0].getAttribute("aria-label") !== "Provider usage") return `visible footer items: ${items.map((e) => e.getAttribute("aria-label")).join(", ")}`;
+      const usage = items[0].getBoundingClientRect();
+      const rail = document.querySelector('[data-testid="sidebar-navigation-rail"]').getBoundingClientRect();
+      const settings = [...document.querySelectorAll('[data-sidebar="panel"] button[aria-label^="Settings"]')].find((e) => e.checkVisibility()).getBoundingClientRect();
+      if (usage.right > rail.right || usage.bottom > settings.top) return `usage at ${Math.round(usage.x)},${Math.round(usage.y)}, settings at ${Math.round(settings.y)}`;
+      return items[0].contains(document.elementFromPoint(usage.x + usage.width / 2, usage.y + usage.height / 2)) ? "" : "usage covered";
     });
     assert(!state, state);
   });
-  await check(width, "Settings opens /settings", async () => {
+  await check(tag, "workspace reaches bottom and right edge", async () => {
+    const state = await evaluate(() => {
+      const shell = document.querySelector("[data-project-workspace-sidebar]").getBoundingClientRect();
+      const panel = document.querySelector('[data-sidebar="panel"]').getBoundingClientRect();
+      const card = document.querySelector('[data-testid="nav-rail-sidebar-body"]').getBoundingClientRect();
+      if (card.bottom - shell.bottom > 2) return `workspace ends at ${Math.round(shell.bottom)}, sidebar card at ${Math.round(card.bottom)}`;
+      return panel.right - shell.right > 2 ? `${Math.round(panel.right - shell.right)}px gap on the right` : "";
+    });
+    assert(!state, state);
+  });
+  await check(tag, "sidebar resize follows the pointer", async () => {
+    const panelWidth = () => evaluate(() => document.querySelector('[data-sidebar="panel"]').getBoundingClientRect().width);
+    const box = await evaluate(() => { const e = document.querySelector(".pw-sidebar-resize"); if (!e.checkVisibility()) return null; const r = e.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; });
+    if (!box) return "skip";
+    const before = await panelWidth();
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: box.x, y: box.y });
+    await send("Input.dispatchMouseEvent", { type: "mousePressed", x: box.x, y: box.y, button: "left", clickCount: 1 });
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: box.x + 5, y: box.y, button: "left", buttons: 1 });
+    await sleep(400);
+    const first = await panelWidth();
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: box.x - 20, y: box.y, button: "left", buttons: 1 });
+    await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: box.x - 20, y: box.y, button: "left", clickCount: 1 });
+    await sleep(400);
+    const after = await panelWidth();
+    assert(Math.abs(first - before - 5) <= 1 && Math.abs(after - before + 20) <= 1, `${before} -> +5: ${first} -> -20: ${after}`);
+  });
+  await check(tag, "Settings opens /settings", async () => {
     await click('[data-sidebar="panel"] button[aria-label^="Settings"]');
     await sleep(800);
     const path = await evaluate(() => location.pathname);
     assert(path.startsWith("/settings"), `stayed on ${path}`);
   });
-  for (const label of ["Search threads", "Plugins", "Skills", "Automations"]) {
-    await check(width, `rail ${label}`, async () => {
-      await open("/");
-      if (!(await evaluate((l) => document.querySelector(`.pw-navigation button[aria-label="${l}"]`)?.checkVisibility() ?? false, label))) return "skip";
-      await click(`.pw-navigation button[aria-label="${label}"]`);
-      await sleep(600);
-      const error = await evaluate(() => document.querySelector(".pw-row-error")?.textContent ?? "");
-      assert(!error, error);
+  await check(tag, "plugin has no own navigation", async () => {
+    assert(!(await evaluate(() => !!document.querySelector(".pw-navigation"))), ".pw-navigation rendered");
+  });
+  for (const label of ["Home", "Search threads", "Plugins", "Skills", "Automations"]) {
+    await check(tag, `native rail ${label}`, async () => {
+      const state = await evaluate((l) => {
+        const button = document.querySelector(`[data-testid="sidebar-navigation-rail"] [aria-label^="${l}"]`);
+        if (!button?.checkVisibility()) return "not visible";
+        const r = button.getBoundingClientRect();
+        return button.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)) ? "" : "covered";
+      }, label);
+      assert(!state, state);
     });
   }
 
   await open("/");
   const trigger = '[data-sidebar="footer"] [data-testid^="plugin-sidebar-footer-item-"][aria-controls]';
-  const hasDisclosure = await evaluate((s) => !!document.querySelector(s), trigger);
   const railHeight = () => evaluate(() => document.querySelector(".pw-rail-scroll")?.clientHeight ?? null);
   const disclosureOpen = () => evaluate(() => !!document.querySelector('section[id^="plugin-sidebar-footer-disclosure-"]'));
   const before = await railHeight();
-  await check(width, "footer disclosure opens without squeezing the rail", async () => {
-    if (!hasDisclosure) return "skip";
+  await check(tag, "usage disclosure opens without squeezing the rail", async () => {
     await click(trigger);
     await sleep(1000);
-    await screenshot(`${width}-disclosure`);
+    await screenshot(`${tag}-disclosure`);
     assert(await disclosureOpen(), "disclosure did not open");
     const after = await railHeight();
     assert(after === before, `rail height ${before} -> ${after}`);
   });
-  await check(width, "click inside disclosure keeps it open", async () => {
-    if (!hasDisclosure || !(await disclosureOpen())) return "skip";
+  await check(tag, "usage disclosure is on top, usage icon has no frame", async () => {
+    if (!(await disclosureOpen())) return "skip";
+    const state = await evaluate(() => {
+      const section = document.querySelector('section[id^="plugin-sidebar-footer-disclosure-"]');
+      const r = section.getBoundingClientRect();
+      for (let x = r.left + 4; x < r.right - 4; x += 6) for (let y = r.top + 4; y < r.bottom - 4; y += 20) {
+        const hit = document.elementFromPoint(x, y);
+        if (!section.contains(hit)) return `covered by ${hit?.className.toString().split(" ")[0]} at ${Math.round(x)},${Math.round(y)}`;
+      }
+      const c = getComputedStyle(document.querySelector('[data-testid="sidebar-footer-body"]'));
+      return c.backgroundColor === "rgba(0, 0, 0, 0)" && c.borderLeftWidth === "0px" && c.borderBottomWidth === "0px" ? "" : `footer bg ${c.backgroundColor}, border ${c.borderLeftWidth}/${c.borderBottomWidth}`;
+    });
+    assert(!state, state);
+  });
+  await check(tag, "click inside disclosure keeps it open", async () => {
+    if (!(await disclosureOpen())) return "skip";
     await click('section[id^="plugin-sidebar-footer-disclosure-"]');
     await sleep(500);
     assert(await disclosureOpen(), "closed on inside click");
   });
-  await check(width, "click outside closes disclosure", async () => {
-    if (!hasDisclosure || !(await disclosureOpen())) return "skip";
+  await check(tag, "click outside closes disclosure", async () => {
+    if (!(await disclosureOpen())) return "skip";
     await mouse(width - 150, 500);
     await sleep(800);
     assert(!(await disclosureOpen()), "still open");
   });
 
-  await check(width, "skill-lens tab replaces My skills content", async () => {
+  await check(tag, "skill-lens tab replaces My skills content", async () => {
     await open("/skills?view=library");
     await sleep(1500);
     const tab = "[data-skill-lens-tab]";
     if (!(await evaluate((s) => !!document.querySelector(s), tab))) return "skip";
     await click(tab);
     await sleep(2000);
-    await screenshot(`${width}-skill-lens`);
+    await screenshot(`${tag}-skill-lens`);
     const state = await evaluate(() => {
       const main = document.querySelector('[data-testid="app-layout-content-shell"] > main');
       if (!main?.querySelector(".sl-root")?.checkVisibility()) return "skill lens not visible";
@@ -163,12 +216,18 @@ for (const width of widths) {
     assert(!state, state);
     await click('.sl-root button[aria-label^="View details for"]');
     await sleep(2500);
-    await screenshot(`${width}-skill-lens-page`);
+    await screenshot(`${tag}-skill-lens-page`);
     assert(await evaluate(() => !!document.querySelector(".sl-page .sl-file[aria-pressed=true]")?.checkVisibility()), "skill page shows no selected file");
     await evaluate(() => [...document.querySelectorAll('[data-testid="skills-sidebar-body"] a')].find((a) => a.textContent === "My skills")?.click());
     await sleep(800);
     assert(!(await evaluate(() => !!document.querySelector(".sl-root"))), "skill lens stayed after native tab click");
   });
+  if (pass.framed) {
+    await check(tag, "desktop frame active", async () => {
+      assert(await evaluate(() => document.querySelector('[data-testid="app-layout-root"]')?.hasAttribute("data-framed")), "data-framed missing");
+    });
+    await send("Page.removeScriptToEvaluateOnNewDocument", { identifier: stub.identifier });
+  }
 }
 
 ws.close();
