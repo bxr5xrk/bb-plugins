@@ -167,7 +167,7 @@ describe("Workspace acceptance", () => {
     expect(app.navPanels).toHaveLength(0); expect(app.fileOpeners).toHaveLength(0); expect(app.composerCustomizations).toHaveLength(0);
   });
 
-  it("A5 injected shell style forwards native resize and fully disposes without editing native width", async () => {
+  it("A5 injected shell style ignores native resize and fully disposes without editing native width", async () => {
     const root = document.createElement("div"); root.dataset.testid = "app-layout-root";
     const panel = document.createElement("div"); panel.dataset.sidebar = "panel";
     panel.style.setProperty("--sidebar-width", "290px"); root.append(panel);
@@ -175,7 +175,8 @@ describe("Workspace acceptance", () => {
     const scripts = await mountPluginContentScripts(app, { pluginId: "project-workspace", generation: 1 });
     expect(document.querySelectorAll("[data-project-workspace-style]")).toHaveLength(1);
     panel.style.setProperty("--sidebar-width", "420px");
-    await waitFor(() => expect(root.style.getPropertyValue("--project-workspace-width")).toBe("420px"));
+    await Promise.resolve();
+    expect(root.style.getPropertyValue("--project-workspace-width")).toBe("");
     await scripts.lifecycle.dispose();
     expect(document.querySelector("[data-project-workspace-style]")).toBeNull();
     expect(root.style.getPropertyValue("--project-workspace-width")).toBe("");

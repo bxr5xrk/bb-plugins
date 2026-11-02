@@ -1,5 +1,4 @@
 import { definePluginApp } from "@get-bb/plugin-sdk/app";
-import { activateHostNavigation } from "./components/workspace-navigation";
 import { ProjectWorkspace } from "./components/project-workspace";
 import { WorkspaceSettings } from "./components/workspace-settings";
 import { SessionCardsSettings } from "./components/session-cards-settings";
@@ -25,10 +24,6 @@ export default definePluginApp((app) => {
     id: "session-cards", title: "Session cards",
     description: "How much of each session the Sessions list shows. Shorter cards fit more sessions on screen.",
     component: SessionCardsSettings,
-  });
-  app.experimental_sidebarFooter.register({
-    kind: "action", id: "settings", label: "Settings", icon: "Settings",
-    onActivate: () => { activateHostNavigation("settings"); },
   });
   app.contentScripts.register({ id: "workspace-shell", mount: mountShellStyle });
 });

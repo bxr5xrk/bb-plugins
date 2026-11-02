@@ -1,13 +1,13 @@
-.pw-shell, .pw-navigation, .pw-settings, .pw-menu { color: var(--foreground); font-family: inherit; font-size: 13px; }
+.pw-shell, .pw-settings, .pw-menu { color: var(--foreground); font-family: inherit; font-size: 13px; }
 .pw-shell { display: grid; grid-template-columns: minmax(128px, 36%) minmax(0, 1fr); flex: 1 1 0%; min-width: 0; min-height: 0; height: 100%; position: relative; background: var(--sidebar, var(--background)); }
 .pw-shell * { box-sizing: border-box; }
-.pw-shell button, .pw-menu-item, .pw-navigation button, .pw-settings button { cursor: pointer; }
-.pw-shell button, .pw-navigation button, .pw-settings button { color: inherit; font: inherit; }
-.pw-shell button:focus-visible, .pw-shell a:focus-visible, .pw-shell input:focus-visible, .pw-shell select:focus-visible, .pw-navigation button:focus-visible, .pw-settings button:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
-.pw-shell button:disabled, .pw-menu-item[data-disabled], .pw-navigation button:disabled, .pw-settings button:disabled { cursor: default; opacity: .45; }
+.pw-shell button, .pw-menu-item, .pw-settings button { cursor: pointer; }
+.pw-shell button, .pw-settings button { color: inherit; font: inherit; }
+.pw-shell button:focus-visible, .pw-shell a:focus-visible, .pw-shell input:focus-visible, .pw-shell select:focus-visible, .pw-settings button:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.pw-shell button:disabled, .pw-menu-item[data-disabled], .pw-settings button:disabled { cursor: default; opacity: .45; }
 .pw-project-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pw-project-row[aria-pressed=true], .pw-mode-buttons [aria-pressed=true] { background: var(--state-active, var(--secondary)); }
-.pw-project-row:hover, .pw-icon-button:hover, .pw-nav-item:hover, .pw-file-row:hover, .pw-section-row:hover { background: var(--state-hover, var(--secondary)); }
+.pw-project-row:hover, .pw-icon-button:hover, .pw-file-row:hover, .pw-section-row:hover { background: var(--state-hover, var(--secondary)); }
 .pw-count { color: var(--muted-foreground); font-size: 11px; flex-shrink: 0; }
 .pw-icon { width: 16px; height: 16px; flex-shrink: 0; }
 .pw-small-icon { width: 12px; height: 12px; flex-shrink: 0; }
@@ -66,12 +66,6 @@
 .pw-shell[data-compact] .pw-mobile-back { display: inline-flex; }
 .pw-shell[data-compact] .pw-sidebar-resize { display: none; }
 .pw-projects { border-right: 1px solid var(--border); display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; }
-.pw-navigation { display: flex; flex-wrap: nowrap; gap: 2px; padding: 6px 8px 10px; border-bottom: 0; flex-direction: column; flex-shrink: 0; max-height: 45%; overflow-y: auto; }
-.pw-nav-item { position: relative; width: 100%; height: auto; border: none; border-radius: 5px; background: transparent; display: flex; align-items: center; justify-content: flex-start; min-height: 32px; padding: 6px 8px; gap: 9px; text-align: left; color: var(--muted-foreground) !important; }
-.pw-nav-item[aria-pressed=true] { background: var(--state-active, var(--secondary)); color: var(--foreground) !important; }
-.pw-nav-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pw-nav-item kbd { font-size: 10px; color: var(--muted-foreground); }
-.pw-nav-accessory { max-width: 4rem; overflow: hidden; }
 .pw-other-navigation summary { cursor: pointer; padding: 7px 8px; font-size: 11px; color: var(--muted-foreground); }
 .pw-project-heading { padding: 10px 16px 8px; color: var(--muted-foreground); font-size: 11px; font-weight: 600; letter-spacing: 0; }
 .pw-project-list { padding: 0 8px 8px; }
@@ -299,11 +293,6 @@
 .pw-delete-entry { margin-right: auto; }
 
 .pw-dialog-actions:has(.pw-delete-entry) { flex-wrap: wrap; }
-
-/* Compact clients retain BB's native navigation rail. */
-@media (max-width: 767px), (pointer: coarse) {
-  .pw-navigation { display: none; }
-}
 
 /* Session cards: Compact and Title only density. */
 :is([data-pw-session-cards="compact"], [data-pw-session-cards="title-only"]) .pw-session-link {

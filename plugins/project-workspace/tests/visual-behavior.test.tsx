@@ -90,19 +90,4 @@ describe("Visual correction behavior", () => {
     await waitFor(() => expect(slot.queryByRole("alert")).toBeNull());
     expect(list).toHaveBeenCalledTimes(1);
   });
-  it("navigation activates native BB controls without removed SDK hooks", () => {
-    const host = document.createElement("nav");
-    host.setAttribute("aria-label", "Primary navigation");
-    host.innerHTML = '<span data-nav-rail-item="__bb__/search-threads"><button>Native search</button></span>';
-    document.body.append(host);
-    const activate = vi.fn(); host.querySelector("button")!.addEventListener("click", activate);
-    try {
-      const slot = setup();
-      expect(slot.queryByRole("button", { name: "New thread" })).toBeNull();
-      fireEvent.click(slot.getByRole("button", { name: "Search threads" }));
-      expect(activate).toHaveBeenCalledOnce();
-      fireEvent.click(slot.getByRole("button", { name: "Skills" }));
-      expect(slot.getByRole("alert").textContent).toContain("Skills is unavailable");
-    } finally { host.remove(); }
-  });
 });

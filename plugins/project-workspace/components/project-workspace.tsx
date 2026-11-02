@@ -11,7 +11,6 @@ import { RailCollapse } from "./rail-collapse";
 import { WorkspaceAgents, useWorkspaceAgents, type BotComposeRequest } from "./workspace-agents";
 import { AgentWorkspace } from "./agent-workspace";
 import type { AgentMemoryDraft } from "./agent-memory";
-import { RailNavigation } from "./workspace-navigation";
 import { WorkspaceExplorer } from "./workspace-explorer";
 import { absolutePath, errorMessage, projectThreads, projectAttention, sessionItems, clampProjectWidth, PROJECT_RAIL_WIDTH_KEY, projectColor, type Lifecycle } from "../lib/workspace-model";
 
@@ -187,30 +186,12 @@ export function ProjectWorkspace(props: PluginThreadListProps) {
     root.style.setProperty("--project-workspace-width", `${width}px`);
     return () => { root.style.removeProperty("--project-workspace-width"); };
   }, [width]);
-  useEffect(() => {
-    const root = shell.current?.closest<HTMLElement>('[data-testid="app-layout-root"]');
-    if (!root) return;
-    root.style.setProperty("--project-workspace-rail-width", `${actualRailWidth}px`);
-    return () => { root.style.removeProperty("--project-workspace-rail-width"); };
-  }, [actualRailWidth]);
-  useEffect(() => {
-    const root = shell.current?.closest<HTMLElement>('[data-testid="app-layout-root"]');
-    const footer = shell.current?.closest('[data-testid="app-sidebar-body"]')?.querySelector<HTMLElement>('[data-sidebar="footer"]');
-    if (!root || !footer) return;
-    // Reserve footer space in the project rail only, including native disclosures.
-    const measure = () => root.style.setProperty("--project-workspace-footer-height", `${footer.getBoundingClientRect().height}px`);
-    measure();
-    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
-    observer?.observe(footer);
-    return () => { observer?.disconnect(); root.style.removeProperty("--project-workspace-footer-height"); };
-  }, []);
   return <div ref={shell} style={{ gridTemplateColumns: `${actualRailWidth}px minmax(0, 1fr)` }} className="pw-shell" data-project-workspace-sidebar="" data-picker={projectPicker || undefined} data-compact={props.isCompactViewport || undefined}>
     <div className="pw-projects" aria-label="Projects" onKeyDown={event => {
       if (projectPicker && event.key === "Escape") {
         event.preventDefault(); pickerNeedsFocus.current = true; setProjectPicker(false);
       }
     }}>
-      <RailNavigation />
       <div className="pw-rail-scroll" role="region" aria-label="Bots and projects" tabIndex={0}>
       <WorkspaceAgents onRemoved={agentRemoved} onNewChat={(id, opener) => { setChosenAgent(id); setProjectPicker(false); setBotComposeRequest({ agentId: id, opener, token: ++botComposeToken.current }); }} state={agents} threads={state.threads} selectedId={chosenAgent} onSelect={id => { setChosenAgent(id); setProjectPicker(false); }} projects={projects} projectId={project?.id} environmentId={state.threads.find(thread => thread.projectId === project?.id && thread.id === props.activeThreadId)?.environment?.id ?? null} onNavigate={props.onNavigate} />
       <section className="pw-rail-section" data-instant={projectsInstant || undefined} aria-label="Project list">
@@ -294,7 +275,7 @@ export function ProjectWorkspace(props: PluginThreadListProps) {
       </div> : <div id="pw-explorer-panel" className="pw-explorer-panel" role="tabpanel" aria-label="Explorer">{project ? <WorkspaceExplorer key={project.id} projectId={project.id} threads={allProjectThreads} previewThreadId={props.activeThreadId} activeThreadId={allProjectThreads.some(t => t.id === props.activeThreadId) ? props.activeThreadId : null} /> : <p className="pw-message">Choose a project first.</p>}</div>}
     </section>}
     <button className="pw-sidebar-resize" role="separator" aria-label="Resize Workspace sidebar" aria-orientation="vertical" aria-valuenow={width ?? 480} aria-valuemin={360} aria-valuemax={Math.max(360, Math.floor(window.innerWidth * .48))}
-      onPointerDown={event => { resizing.current = { x: event.clientX, width: shell.current?.getBoundingClientRect().width ?? 480 }; event.currentTarget.setPointerCapture(event.pointerId); }}
+      onPointerDown={event => { resizing.current = { x: event.clientX, width: shell.current?.closest('[data-sidebar="panel"]')?.getBoundingClientRect().width ?? 480 }; event.currentTarget.setPointerCapture(event.pointerId); }}
       onPointerMove={event => { if (resizing.current) setWidth(Math.max(360, Math.min(window.innerWidth * 0.48, resizing.current.width + event.clientX - resizing.current.x))); }}
       onPointerUp={() => { resizing.current = null; }} onPointerCancel={() => { resizing.current = null; }}
       onKeyDown={event => { if (event.key === "ArrowLeft" || event.key === "ArrowRight") { event.preventDefault(); setWidth(Math.max(360, Math.min(window.innerWidth * 0.48, (width ?? 480) + (event.key === "ArrowRight" ? 24 : -24)))); } }} />

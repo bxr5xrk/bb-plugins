@@ -24,10 +24,9 @@ only the adjacent sidebar; it does not interrupt or replace the current chat.
 
 The Workspace button selects `project-workspace/workspace`; Default BB selects
 `thread-list/thread-list`. Writes use the preference's current revision and do
-not overwrite concurrent changes. BB 0.46 removed the separate navigation
-provider preference. Desktop Workspace now restores labelled navigation through
-ordinary activation of BB's rendered navigation controls, with conditional,
-disposable shell CSS. Search, routes and keyboard shortcuts stay host-owned.
+not overwrite concurrent changes. Navigation stays in BB's own icon rail on the
+far left (Home, Search, Plugins, Skills, Automations, More, Settings); search,
+routes and keyboard shortcuts stay host-owned.
 
 ## Sessions
 
@@ -66,9 +65,8 @@ archive pages have been loaded. Search operates on the loaded session pages.
 
 ## Bots and navigation
 
-Labelled native BB destinations now live in the left rail. The global new-thread
-control and duplicate all-destinations overflow were removed; the project-local
-new-session control remains. Hidden destinations have their own disclosure.
+BB's native icon rail provides navigation; the Workspace adds no destinations of
+its own. The project-local new-session control remains.
 
 **Bots** are reusable global specialist profiles, independent of a single chat.
 Use **+** beside Bots to create one manually or from an actual installed skill.
@@ -197,20 +195,24 @@ experimental in SDK 0.6.37. A trusted content script injects one stylesheet,
 conditional on the mounted Workspace marker, to expand BB's native sidebar.
 It targets the layout root and native gap/panel sizing variables because the
 installed host sets sidebar width on those child elements.
-The Workspace edge handle supports pointer/keyboard resizing; native inline
-sidebar-width changes are also forwarded into the plugin's scoped override.
-The outer desktop width is at least 360px and capped at 48vw. The internal
+The Workspace edge handle supports pointer/keyboard resizing from the full panel
+width, rail included. BB's own resize handle is hidden while the Workspace is
+mounted: since 0.48 it sizes only the area beside the rail (240–460px), which
+conflicts with the plugin's override. The outer desktop width is at least 360px
+and capped at 48vw; below 1100px there is no sidebar resize. The internal
 project/session splitter independently changes the rail from 140 to 340px while
 reserving about 220px for sessions. It supports pointer, Arrow/Home/End keys and
 client-local persistence. Navigation is bounded; the keyboard-focusable agents
-and projects region scrolls, including a long roster and its add form. The footer remains native, with Workspace Settings restored as a footer action.
-In the two-column desktop layout, the footer occupies only the project rail;
-its measured height reserves space there while Sessions fills the sidebar to
-the bottom. Its width follows the project splitter. Native framed windows hide
-the duplicate 48px top reserve; web clients retain their history controls.
-The redundant native New thread label and icon rail are hidden only while the
-Workspace is mounted on desktop; the project header retains its New session action. Switching back makes the sizing rule inert immediately; disabling or
-reloading removes the exact stylesheet, observer and plugin sizing variable.
+and projects region scrolls, including a long roster and its add form.
+The native footer row is hidden except **Provider usage**, which moves into the
+icon rail just above Settings, without the footer card's background or border.
+Its popup opens over the bottom-left of the sidebar, above the resize handles,
+and closes on an outside click. The Workspace fills the sidebar to the bottom
+and to the right edge (BB's reserved scrollbar gutter is dropped; Sessions
+scrolls on its own). Native framed windows hide the duplicate 48px top reserve;
+web clients retain their history controls. Switching back makes the sizing rule
+inert immediately; disabling or reloading removes the exact stylesheet, the
+outside-click listener and the plugin sizing variable.
 No app bundle, private store or host inline width is patched.
 
 Turning off an exclusive provider makes BB fall back to host behavior; the saved
