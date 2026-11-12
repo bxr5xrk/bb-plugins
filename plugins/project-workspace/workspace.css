@@ -143,6 +143,7 @@
 
 .pw-rail-scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
 .pw-rail-scroll:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.pw-rail-footer { display: none; flex: none; height: 41px; border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent); }
 
 /* Compact session hierarchy: title and meaningful attention only. */
 .pw-session { height: 76px; }

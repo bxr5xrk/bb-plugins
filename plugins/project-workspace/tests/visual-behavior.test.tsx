@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, waitFor } from "@testing-library/react";
 import { loadPluginApp } from "@get-bb/plugin-sdk/testing/app";
 import { renderSlot } from "./render-slot";
@@ -9,7 +9,8 @@ const props = { activeThreadId: "chat", activeProjectId: "alpha", isCompactViewp
 function setup(threads = [thread("chat", "alpha")], options = {}) {
   return renderSlot(app.threadLists[0]!, props, { rpc: { listSpecialists: async () => ({ profiles: [], bindings: [], legacy: [] }) }, sidebarThreads: { status: "ready", projects: [project("alpha")], threads, sections: [] }, sdk: { projects: { list: async () => [] } }, ...options });
 }
-afterEach(() => { cleanup(); localStorage.removeItem(PROJECT_RAIL_WIDTH_KEY); });
+beforeEach(() => { localStorage.setItem("project-workspace.bots-collapsed.v1", "false"); });
+afterEach(() => { cleanup(); localStorage.removeItem(PROJECT_RAIL_WIDTH_KEY); localStorage.removeItem("project-workspace.bots-collapsed.v1"); });
 describe("Visual correction behavior", () => {
   it("waiting interactions override active runtime and goals never masquerade as executing", () => {
     expect(sessionStatus(thread("approval", "alpha", { runtimeStatus: "active", hasPendingInteraction: true }))).toEqual({ kind: "waiting", label: "Needs input" });

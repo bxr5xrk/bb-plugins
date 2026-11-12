@@ -186,6 +186,12 @@ export function ProjectWorkspace(props: PluginThreadListProps) {
     root.style.setProperty("--project-workspace-width", `${width}px`);
     return () => { root.style.removeProperty("--project-workspace-width"); };
   }, [width]);
+  useEffect(() => {
+    const root = shell.current?.closest<HTMLElement>('[data-testid="app-layout-root"]');
+    if (!root) return;
+    root.style.setProperty("--pw-rail-width", `${actualRailWidth}px`);
+    return () => { root.style.removeProperty("--pw-rail-width"); };
+  }, [actualRailWidth]);
   return <div ref={shell} style={{ gridTemplateColumns: `${actualRailWidth}px minmax(0, 1fr)` }} className="pw-shell" data-project-workspace-sidebar="" data-picker={projectPicker || undefined} data-compact={props.isCompactViewport || undefined}>
     <div className="pw-projects" aria-label="Projects" onKeyDown={event => {
       if (projectPicker && event.key === "Escape") {
@@ -233,6 +239,7 @@ export function ProjectWorkspace(props: PluginThreadListProps) {
       </RailCollapse>
       </section>
       </div>
+      <div className="pw-rail-footer" />
     </div>
     <button className="pw-project-resize" role="separator" aria-label="Resize projects panel" aria-orientation="vertical" aria-valuenow={Math.round(actualRailWidth)} aria-valuemin={140} aria-valuemax={Math.min(340, Math.max(140, containerWidth - 220))} style={{ left: actualRailWidth - 3 }}
       onPointerDown={event => { event.preventDefault(); railResizing.current = { x: event.clientX, width: actualRailWidth }; event.currentTarget.setPointerCapture(event.pointerId); }}

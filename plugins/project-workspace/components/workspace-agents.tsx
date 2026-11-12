@@ -73,7 +73,7 @@ export function WorkspaceAgents({ state, threads, selectedId, onSelect, projects
   const [deletion, setDeletion] = useState<{ profile: AgentProfile; opener: HTMLElement | null } | null>(null);
   function removed(id: string) { setEditor(null); setDeletion(null); state.refresh(); onRemoved(id); }
   const editorOpener = useRef<HTMLElement | null>(null), contentId = useId();
-  const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem(BOTS_COLLAPSED_KEY) === "true"; } catch { return false; } });
+  const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem(BOTS_COLLAPSED_KEY) !== "false"; } catch { return true; } });
   const [instant, setInstant] = useState(false);
   function toggleBots() { setCollapsed(previous => { const next = !previous; try { localStorage.setItem(BOTS_COLLAPSED_KEY, String(next)); } catch { /* The section still works without client storage. */ } return next; }); }
   const ordered = useMemo(() => state.profiles.map(profile => ({ profile, threads: specialistThreads(threads, state.bindings, profile.id) })).sort((a, b) => {

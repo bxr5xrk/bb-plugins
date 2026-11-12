@@ -23,6 +23,7 @@ async function createFields(name = "Scout") {
 }
 const originalLocks = Object.getOwnPropertyDescriptor(navigator, "locks");
 beforeEach(() => {
+  localStorage.setItem("project-workspace.bots-collapsed.v1", "false");
   const queues = new Map<string, Promise<unknown>>();
   Object.defineProperty(navigator, "locks", { configurable: true, value: { request: <T,>(name: string, _options: unknown, callback: () => T) => {
     const result = (queues.get(name) ?? Promise.resolve()).catch(() => undefined).then(callback);
@@ -89,6 +90,14 @@ describe("Persistent specialist workflows", () => {
     fireEvent.click(first.getByRole("button", { name: "Create bot" })); const body = within(document.body); expect(body.getByRole("dialog", { name: "Create bot" })).toBeTruthy(); fireEvent.click(body.getByRole("button", { name: "Cancel" }));
     expect(heading.getAttribute("aria-expanded")).toBe("false"); first.unmount(); const reopened = setup(options); expect(reopened.getByRole("button", { name: /^Bots/ }).getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(reopened.getByRole("button", { name: /^Bots/ })); await reopened.findByRole("button", { name: "Select bot Reviewer" });
+  });
+  it("Bots start collapsed when nothing is stored", async () => {
+    localStorage.removeItem("project-workspace.bots-collapsed.v1");
+    const slot = setup({ rpc: { listSpecialists: async () => ({ profiles: [profile()], bindings: [], legacy: [] }) } });
+    const heading = slot.getByRole("button", { name: /^Bots/ });
+    await waitFor(() => expect(heading.textContent).toContain("1"));
+    expect(heading.getAttribute("aria-expanded")).toBe("false");
+    expect(slot.queryByRole("button", { name: "Select bot Reviewer" })).toBeNull();
   });
   it("bot settings dismiss outside but stay open while saving and preserve failed SOUL.md drafts", async () => {
     let reject!: (cause: Error) => void; const save = vi.fn((_fields: unknown) => new Promise<AgentProfile>((_resolve, rejectPromise) => { reject = rejectPromise; }));

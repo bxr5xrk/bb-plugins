@@ -17,6 +17,7 @@ let motionChanged: () => void;
 let intersect: IntersectionObserverCallback;
 const disconnect = vi.fn();
 beforeEach(() => {
+  localStorage.setItem("project-workspace.bots-collapsed.v1", "false");
   reduce = false; seen.mockClear(); disconnect.mockClear();
   vi.stubGlobal("Path2D", class {});
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({} as CanvasRenderingContext2D);

@@ -14,9 +14,10 @@ const setup = () => renderSlot(app.threadLists[0]!, {
   sidebarThreads: { status: "ready", projects: [project("alpha"), project("beta")], threads: [thread("chat", "alpha")], sections: [] },
   sdk: { projects: { list: async () => [] }, hosts: { list: async () => [] } },
 });
-afterEach(() => { cleanup(); localStorage.removeItem(HIDDEN_PROJECTS_KEY); localStorage.removeItem(PROJECTS_COLLAPSED_KEY); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); localStorage.removeItem(HIDDEN_PROJECTS_KEY); localStorage.removeItem(PROJECTS_COLLAPSED_KEY); localStorage.removeItem("project-workspace.bots-collapsed.v1"); vi.restoreAllMocks(); });
 
 it("collapses projects independently, persists the state and keeps adding a project reachable", async () => {
+  localStorage.setItem("project-workspace.bots-collapsed.v1", "false");
   const user = userEvent.setup(), slot = setup();
   const heading = slot.getByRole("button", { name: "Projects" });
   const bots = slot.getByRole("button", { name: /^Bots/ });
