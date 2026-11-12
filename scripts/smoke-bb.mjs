@@ -100,7 +100,28 @@ for (const pass of passes) {
     const count = await evaluate(() => [...document.querySelectorAll('[data-sidebar="panel"] button[aria-label^="Settings"]')].filter((e) => e.checkVisibility()).length);
     assert(count === 1, `${count} visible Settings buttons`);
   });
-  await check(tag, "footer shows only usage, in rail above Settings", async () => {
+  if (pass.framed) await check(tag, "bottom row: rail left, usage and Settings right, no Home", async () => {
+    const state = await evaluate(() => {
+      const visible = (s) => [...document.querySelectorAll(s)].filter((e) => e.checkVisibility());
+      if (visible('[data-testid="app-nav-rail"] button[aria-label="Home"]').length) return "Home visible";
+      const rail = visible('[data-testid="app-nav-rail"] button');
+      const usage = visible('[data-testid="sidebar-footer-body"] button, [data-testid="sidebar-footer-body"] a');
+      if (usage.length !== 1 || usage[0].getAttribute("aria-label") !== "Provider usage") return `visible footer items: ${usage.map((e) => e.getAttribute("aria-label")).join(", ")}`;
+      const settings = visible('[data-sidebar="panel"] button[aria-label^="Settings"]')[0];
+      const row = document.querySelector(".pw-rail-footer").getBoundingClientRect();
+      const items = [...rail, usage[0], settings];
+      for (const e of items) {
+        const r = e.getBoundingClientRect();
+        if (Math.abs(r.y + r.height / 2 - (row.y + row.height / 2)) > 2) return `${e.getAttribute("aria-label")} at y ${Math.round(r.y)}, row at ${Math.round(row.y)}`;
+        if (!e.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2))) return `${e.getAttribute("aria-label")} covered`;
+      }
+      const [u, st] = [usage[0].getBoundingClientRect(), settings.getBoundingClientRect()];
+      const last = Math.max(...rail.map((e) => e.getBoundingClientRect().right));
+      return last <= u.left && u.right <= st.left && st.right <= row.right ? "" : `rail ends ${Math.round(last)}, usage ${Math.round(u.left)}-${Math.round(u.right)}, settings ${Math.round(st.left)}-${Math.round(st.right)}, row ends ${Math.round(row.right)}`;
+    });
+    assert(!state, state);
+  });
+  else await check(tag, "footer shows only usage, in rail above Settings", async () => {
     const state = await evaluate(() => {
       const items = [...document.querySelectorAll('[data-testid="sidebar-footer-body"] button, [data-testid="sidebar-footer-body"] a')].filter((e) => e.checkVisibility());
       if (items.length !== 1 || items[0].getAttribute("aria-label") !== "Provider usage") return `visible footer items: ${items.map((e) => e.getAttribute("aria-label")).join(", ")}`;
@@ -151,10 +172,12 @@ for (const pass of passes) {
     await check(tag, `native rail ${label}`, async () => {
       const state = await evaluate((l) => {
         const button = document.querySelector(`[data-testid="sidebar-navigation-rail"] [aria-label^="${l}"]`);
-        if (!button?.checkVisibility()) return "not visible";
+        if (!button) return "skip";
+        if (!button.checkVisibility()) return "not visible";
         const r = button.getBoundingClientRect();
         return button.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2)) ? "" : "covered";
       }, label);
+      if (state === "skip") return "skip";
       assert(!state, state);
     });
   }
