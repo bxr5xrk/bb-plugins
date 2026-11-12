@@ -183,14 +183,15 @@ export function ProjectWorkspace(props: PluginThreadListProps) {
   useEffect(() => {
     const root = shell.current?.closest<HTMLElement>('[data-testid="app-layout-root"]');
     if (!root || width === null) return;
-    root.style.setProperty("--project-workspace-width", `${width}px`);
-    return () => { root.style.removeProperty("--project-workspace-width"); };
+    const parts = root.querySelectorAll<HTMLElement>('[data-sidebar="gap"], [data-sidebar="panel"]');
+    parts.forEach(part => part.style.setProperty("--project-workspace-width", `${width}px`));
+    return () => { parts.forEach(part => part.style.removeProperty("--project-workspace-width")); };
   }, [width]);
   useEffect(() => {
-    const root = shell.current?.closest<HTMLElement>('[data-testid="app-layout-root"]');
-    if (!root) return;
-    root.style.setProperty("--pw-rail-width", `${actualRailWidth}px`);
-    return () => { root.style.removeProperty("--pw-rail-width"); };
+    const panel = shell.current?.closest<HTMLElement>('[data-sidebar="panel"]');
+    if (!panel) return;
+    panel.style.setProperty("--pw-rail-width", `${actualRailWidth}px`);
+    return () => { panel.style.removeProperty("--pw-rail-width"); };
   }, [actualRailWidth]);
   return <div ref={shell} style={{ gridTemplateColumns: `${actualRailWidth}px minmax(0, 1fr)` }} className="pw-shell" data-project-workspace-sidebar="" data-picker={projectPicker || undefined} data-compact={props.isCompactViewport || undefined}>
     <div className="pw-projects" aria-label="Projects" onKeyDown={event => {

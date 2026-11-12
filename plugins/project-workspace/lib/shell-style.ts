@@ -62,6 +62,10 @@ export const SHELL_CSS = `
   [data-testid="app-layout-root"]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="panel"] {
     --sidebar-width: clamp(360px, var(--project-workspace-width, 480px), 48vw) !important;
   }
+  [data-testid="app-layout-root"]:has([data-project-workspace-sidebar]) [data-sidebar="gap"],
+  [data-testid="app-layout-root"]:has([data-project-workspace-sidebar]) [data-sidebar="panel"] {
+    transition: none;
+  }
   html[style*="--bb-macos-traffic-light-center-y"]:has([data-testid="app-layout-root"][data-framed] [data-project-workspace-sidebar]) {
     --bb-window-title-bar-height: ${TITLE_BAR_HEIGHT}px !important;
     --bb-window-card-mask: ${cardMask(TITLE_BAR_HEIGHT, false)} !important;
@@ -157,5 +161,5 @@ export function mountShellStyle(_context: PluginContentScriptContext) {
   document.addEventListener("pointerdown", closeFooterDisclosure, true);
   // The CSS becomes inert as soon as the slot unmounts. Disable removes the
   // exact injected node and plugin variable without touching native settings.
-  return () => { document.removeEventListener("pointerdown", closeFooterDisclosure, true); style.remove(); root?.style.removeProperty("--project-workspace-width"); root?.style.removeProperty("--pw-rail-width"); };
+  return () => { document.removeEventListener("pointerdown", closeFooterDisclosure, true); style.remove(); root?.querySelectorAll<HTMLElement>('[data-sidebar="gap"], [data-sidebar="panel"]').forEach(part => { part.style.removeProperty("--project-workspace-width"); part.style.removeProperty("--pw-rail-width"); }); };
 }
