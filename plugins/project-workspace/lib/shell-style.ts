@@ -2,8 +2,9 @@ import type { PluginContentScriptContext } from "@get-bb/plugin-sdk/app";
 
 const TITLE_BAR_HEIGHT = 40;
 
-const cardMask = (height: number, squareLeft: boolean) => {
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><rect width='100%' height='${height}'/><rect y='${height}' width='100%' height='100%' rx='8'/>${squareLeft ? `<rect y='${height}' width='8' height='8'/>` : ""}</svg>`;
+const CARD_RADIUS = 12;
+const cardMask = (height: number) => {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><rect width='100%' height='${height}'/><rect y='${height}' width='100%' height='100%' rx='${CARD_RADIUS}'/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 };
 
@@ -68,8 +69,9 @@ export const SHELL_CSS = `
   }
   html[style*="--bb-macos-traffic-light-center-y"]:has([data-testid="app-layout-root"][data-framed] [data-project-workspace-sidebar]) {
     --bb-window-title-bar-height: ${TITLE_BAR_HEIGHT}px !important;
-    --bb-window-card-mask: ${cardMask(TITLE_BAR_HEIGHT, false)} !important;
-    --bb-window-card-mask-square-left: ${cardMask(TITLE_BAR_HEIGHT, true)} !important;
+    --bb-frame-card-radius: ${CARD_RADIUS}px !important;
+    --bb-window-card-mask: ${cardMask(TITLE_BAR_HEIGHT)} !important;
+    --bb-window-card-mask-square-left: ${cardMask(TITLE_BAR_HEIGHT)} !important;
   }
   [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="gap"] {
     anchor-name: --pw-sidebar;
@@ -141,6 +143,107 @@ export const SHELL_CSS = `
   }
   [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="app-sidebar-body"] > div:has(> section[id^="plugin-sidebar-footer-disclosure-"]) {
     bottom: 41px;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="nav-rail-sidebar-body"] {
+    background: transparent;
+    border: 0;
+    clip-path: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="nav-rail-sidebar-body"] [data-sidebar="content"],
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-shell,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-section-row,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-session-search select {
+    background: transparent;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-testid="app-sidebar-body"] .bg-gradient-to-b {
+    display: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-projects {
+    border-right-color: transparent;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-workspace {
+    background: color-mix(in oklab, var(--background) 55%, var(--sidebar));
+    border-radius: var(--bb-frame-card-radius);
+    box-shadow: inset 0 0 0 1px var(--border-hairline, var(--border));
+    overflow: hidden;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-workspace-header,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-tabs,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-session-search,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) .pw-explorer-root {
+    border-color: var(--border-hairline, var(--border));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) {
+    --pw-card-gap: 6px;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"] {
+    margin-left: var(--pw-card-gap);
+    clip-path: inset(0 round 0 0 var(--bb-frame-card-radius) var(--bb-frame-card-radius));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]::before,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="inset-edge"] {
+    border-radius: var(--bb-frame-card-radius);
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]::after {
+    display: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-sidebar="inset-edge"] {
+    border-color: var(--border-hairline, var(--border));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside)::before {
+    background: transparent;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) > [data-sidebar="inset-edge"] {
+    display: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) [data-panel-id="thread-detail-timeline-panel"] {
+    position: relative;
+    mask-image: ${cardMask(TITLE_BAR_HEIGHT)};
+    clip-path: inset(0 round 0 0 var(--bb-frame-card-radius) var(--bb-frame-card-radius));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) [data-panel-id="thread-detail-timeline-panel"]::before,
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) [data-panel-id="thread-detail-timeline-panel"]::after {
+    content: "";
+    position: absolute;
+    inset: var(--bb-window-title-bar-height) 0 0 0;
+    border-radius: var(--bb-frame-card-radius);
+    pointer-events: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) [data-panel-id="thread-detail-timeline-panel"]::before {
+    z-index: -1;
+    background: var(--background);
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) main[data-sidebar="inset"]:has([data-panel-id="thread-detail-secondary-panel"] > aside) [data-panel-id="thread-detail-timeline-panel"]::after {
+    z-index: 30;
+    box-shadow: inset 0 0 0 1px var(--border-hairline, var(--border));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-panel-resize-handle-id="thread-detail-secondary-panel-handle"]:not(:hover) > span:last-child {
+    background: transparent;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-panel-id="thread-detail-secondary-panel"] > aside[data-surface-tone="sidebar"] {
+    left: var(--pw-card-gap);
+    right: 0;
+    width: auto !important;
+    border-left: 0;
+    mask-image: ${cardMask(TITLE_BAR_HEIGHT)};
+    clip-path: inset(0 round 0 0 var(--bb-frame-card-radius) var(--bb-frame-card-radius));
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-panel-id="thread-detail-secondary-panel"] > aside[data-surface-tone="sidebar"]::before {
+    top: var(--bb-window-title-bar-height);
+    background: color-mix(in oklab, var(--background) 55%, var(--sidebar));
+    border-radius: var(--bb-frame-card-radius);
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-panel-id="thread-detail-secondary-panel"] > aside[data-surface-tone="sidebar"]::after {
+    content: "";
+    position: absolute;
+    inset: var(--bb-window-title-bar-height) 0 0 0;
+    z-index: 30;
+    border-radius: var(--bb-frame-card-radius);
+    box-shadow: inset 0 0 0 1px var(--border-hairline, var(--border));
+    pointer-events: none;
+  }
+  [data-testid="app-layout-root"][data-framed]:has([data-side="left"][data-state="expanded"] [data-testid="app-sidebar-body"]:not([hidden]) [data-project-workspace-sidebar]) [data-panel-id="thread-detail-secondary-panel"] > aside[data-surface-tone="sidebar"] > div > div:last-child {
+    background: transparent;
   }
 }
 `;
